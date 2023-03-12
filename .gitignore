@@ -1,0 +1,18 @@
+# Node.js packages
+node_modules/
+
+# TypeScript out dir
+dist/
+
+# Environment files
+.env*
+!.env.example
+
+# IDE-related
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# OS-related
+.DS_Store
