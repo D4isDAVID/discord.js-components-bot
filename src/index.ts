@@ -1,8 +1,19 @@
-import BotClient from './structures/bot-client.js';
+import { REST } from '@discordjs/rest';
+import { WebSocketManager } from '@discordjs/ws';
+import process from 'node:process';
+import BotClient from './bot/client.js';
 
 import dotenv from 'dotenv';
 dotenv.config();
 
-const client = new BotClient({ intents: [] });
+const rest = new REST({ version: '10' }).setToken(process.env.BOT_TOKEN!);
+const ws = new WebSocketManager({
+    token: process.env.BOT_TOKEN!,
+    intents: 0,
+    rest,
+});
+
+const client = new BotClient({ rest, ws });
 await client.loadComponents();
-await client.login(process.env.BOT_TOKEN);
+
+await ws.connect();

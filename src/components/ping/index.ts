@@ -1,19 +1,53 @@
-import { BotComponent } from '../../interfaces/bot-component-data.js';
+import { WebSocketShardEvents } from '@discordjs/ws';
+import {
+    BotCommand,
+    BotComponent,
+    BotWebSocketEvent,
+} from '../../bot/component-data.js';
+
+let ping = -1;
+const pingMessage = (p: string) => `🏓 Pong! \`${p}\``;
+
+const heartbeatEvent = {
+    name: WebSocketShardEvents.HeartbeatComplete,
+    type: 'on',
+    async execute({ latency }) {
+        ping = latency;
+    },
+} as BotWebSocketEvent<WebSocketShardEvents.HeartbeatComplete>;
+
+const pingCommand = {
+    data: {
+        name: 'ping',
+        description: 'Ping command',
+    },
+    async execute({ api, data: interaction, client }) {
+        let method: 'reply' | 'editReply' = 'reply';
+
+        if (ping < 0) {
+            const p = new Promise<void>((resolve) => {
+                client.ws.once(WebSocketShardEvents.HeartbeatComplete, () => {
+                    resolve();
+                });
+            });
+            method = 'editReply';
+            await api.interactions.reply(interaction.id, interaction.token, {
+                content: pingMessage('fetching...'),
+            });
+            await p;
+        }
+
+        await api.interactions[method](
+            method === 'reply' ? interaction.id : interaction.application_id,
+            interaction.token,
+            {
+                content: pingMessage(`${ping}ms`),
+            }
+        );
+    },
+} as BotCommand;
 
 export default {
-    commands: [
-        {
-            data: {
-                name: 'ping',
-                description: 'Ping command',
-            },
-            async execute(interaction) {
-                const { client } = interaction;
-                await interaction.reply({
-                    content: `🏓 Pong! \`${client.ws.ping}ms\``,
-                    fetchReply: true,
-                });
-            },
-        },
-    ],
+    wsEvents: [heartbeatEvent],
+    commands: [pingCommand],
 } as BotComponent;

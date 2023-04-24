@@ -1,15 +1,11 @@
-import {
-    ComponentType,
-    StringSelectMenuComponentData,
-    StringSelectMenuInteraction,
-} from 'discord.js';
-import { BotMessageComponent } from '../../interfaces/bot-component-data.js';
+import { ComponentType, MessageFlags } from '@discordjs/core';
+import { BotMessageComponent } from '../../bot/component-data.js';
 import button from './button.js';
 
 export default {
     data: {
         type: ComponentType.StringSelect,
-        customId: 'select_menu_example',
+        custom_id: 'select_menu_example',
         placeholder: 'What should I do?',
         options: [
             {
@@ -17,24 +13,32 @@ export default {
                 label: 'Show me a cool button!',
             },
         ],
-        maxValues: 1,
-    } as StringSelectMenuComponentData,
-    async execute(interaction: StringSelectMenuInteraction) {
-        await interaction.update({});
-        switch (interaction.values[0]) {
+        max_values: 1,
+    },
+    async execute({ api, data: interaction }) {
+        await api.interactions.updateMessage(
+            interaction.id,
+            interaction.token,
+            {}
+        );
+        switch (interaction.data.values[0]) {
             case 'button':
-                await interaction.followUp({
-                    components: [
-                        {
-                            type: ComponentType.ActionRow,
-                            components: [button.data],
-                        },
-                    ],
-                    ephemeral: true,
-                });
+                await api.interactions.followUp(
+                    interaction.application_id,
+                    interaction.token,
+                    {
+                        components: [
+                            {
+                                type: ComponentType.ActionRow,
+                                components: [button.data],
+                            },
+                        ],
+                        flags: MessageFlags.Ephemeral,
+                    }
+                );
                 break;
             default:
                 break;
         }
     },
-} as BotMessageComponent;
+} as BotMessageComponent<ComponentType.StringSelect>;

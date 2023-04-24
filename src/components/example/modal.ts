@@ -1,9 +1,9 @@
-import { ComponentType, TextInputStyle } from 'discord.js';
-import { BotModal } from '../../interfaces/bot-component-data.js';
+import { ComponentType, MessageFlags, TextInputStyle } from '@discordjs/core';
+import { BotModal } from '../../bot/component-data.js';
 
 export default {
     data: {
-        customId: 'example',
+        custom_id: 'example',
         title: 'Example modal',
         components: [
             {
@@ -11,19 +11,21 @@ export default {
                 components: [
                     {
                         type: ComponentType.TextInput,
-                        customId: 'message',
+                        custom_id: 'message',
                         label: 'Message',
                         placeholder: 'Enter a message to be sent by the bot!',
                         style: TextInputStyle.Paragraph,
-                        maxLength: 2000,
+                        max_length: 2000,
                         required: true,
                     },
                 ],
             },
         ],
     },
-    async execute(interaction) {
-        const content = interaction.fields.getTextInputValue('message');
-        await interaction.reply({ content, ephemeral: true });
+    async execute({ data: interaction, api }) {
+        await api.interactions.reply(interaction.id, interaction.token, {
+            content: interaction.data.components[0]?.components[0]?.value,
+            flags: MessageFlags.Ephemeral,
+        });
     },
 } as BotModal;

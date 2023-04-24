@@ -1,20 +1,19 @@
-import {
-    ButtonComponentData,
-    ButtonInteraction,
-    ButtonStyle,
-    ComponentType,
-} from 'discord.js';
-import { BotMessageComponent } from '../../interfaces/bot-component-data.js';
+import { ButtonStyle, ComponentType } from '@discordjs/core';
+import { BotMessageComponent } from '../../bot/component-data.js';
 import modal from './modal.js';
 
 export default {
     data: {
         type: ComponentType.Button,
-        customId: 'button_example',
+        custom_id: 'button_example',
         style: ButtonStyle.Primary,
         label: 'Click me!',
-    } as ButtonComponentData,
-    async execute(interaction: ButtonInteraction) {
-        await interaction.showModal(modal.data);
     },
-} as BotMessageComponent;
+    async execute({ data: interaction, api }) {
+        await api.interactions.createModal(
+            interaction.id,
+            interaction.token,
+            modal.data
+        );
+    },
+} as BotMessageComponent<ComponentType.Button>;

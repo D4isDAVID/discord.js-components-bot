@@ -1,10 +1,11 @@
-import { Events } from 'discord.js';
-import { BotEvent } from '../../../interfaces/bot-component-data.js';
+import { GatewayDispatchEvents } from '@discordjs/core';
+import { BotEvent } from '../../../bot/component-data.js';
 
 export default {
-    type: 'on',
-    name: Events.ClientReady,
-    async execute(client) {
-        console.log(`Ready as ${client.user.tag}!`);
+    type: 'once',
+    name: GatewayDispatchEvents.Ready,
+    async execute({ data }) {
+        const { user } = data;
+        console.log(`Ready as ${user.username}#${user.discriminator}`);
     },
-} as BotEvent<Events.ClientReady>;
+} as BotEvent<GatewayDispatchEvents.Ready>;

@@ -1,4 +1,4 @@
-import { BotComponent } from '../../interfaces/bot-component-data.js';
+import { BotComponent } from '../../bot/component-data.js';
 import button from './button.js';
 import command from './command.js';
 import modal from './modal.js';

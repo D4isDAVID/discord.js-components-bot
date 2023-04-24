@@ -13,7 +13,10 @@
     "start": "npm run build && node ."
   },
   "dependencies": {
-    "discord.js": "^14.7.1",
+    "@discordjs/collection": "^1.5.0",
+    "@discordjs/core": "^0.5.2",
+    "@discordjs/rest": "^1.7.0",
+    "@discordjs/ws": "^0.8.1",
     "dotenv": "^16.0.3",
     "prettier": "^2.8.4"
   },

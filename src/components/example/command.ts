@@ -1,5 +1,5 @@
-import { ComponentType } from 'discord.js';
-import { BotCommand } from '../../interfaces/bot-component-data.js';
+import { ComponentType, MessageFlags } from '@discordjs/core';
+import { BotCommand } from '../../bot/component-data.js';
 import selectMenu from './select-menu.js';
 
 export default {
@@ -7,15 +7,15 @@ export default {
         name: 'example',
         description: 'Example command',
     },
-    async execute(interaction) {
-        await interaction.reply({
+    async execute({ api, data: interaction }) {
+        await api.interactions.reply(interaction.id, interaction.token, {
             components: [
                 {
                     type: ComponentType.ActionRow,
                     components: [selectMenu.data],
                 },
             ],
-            ephemeral: true,
+            flags: MessageFlags.Ephemeral,
         });
     },
 } as BotCommand;
