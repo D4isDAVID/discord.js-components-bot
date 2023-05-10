@@ -1,5 +1,5 @@
 import { ComponentType, MessageFlags, TextInputStyle } from '@discordjs/core';
-import { BotModal } from '../../bot/component-data.js';
+import { BotModal } from '../../component-data.js';
 
 export default {
     data: {

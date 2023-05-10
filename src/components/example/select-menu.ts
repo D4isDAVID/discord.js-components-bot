@@ -1,5 +1,5 @@
 import { ComponentType, MessageFlags } from '@discordjs/core';
-import { BotMessageComponent } from '../../bot/component-data.js';
+import { BotMessageComponent } from '../../component-data.js';
 import button from './button.js';
 
 export default {

@@ -1,5 +1,5 @@
 import { ComponentType, MessageFlags } from '@discordjs/core';
-import { BotCommand } from '../../bot/component-data.js';
+import { BotCommand } from '../../component-data.js';
 import selectMenu from './select-menu.js';
 
 export default {

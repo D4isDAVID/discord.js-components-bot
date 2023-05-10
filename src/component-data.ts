@@ -12,6 +12,7 @@ import {
     APIModalInteractionResponseCallbackData,
     APIModalSubmitInteraction,
     APISelectMenuComponent,
+    Client,
     ComponentType,
     GatewayDispatchEvents,
     InteractionType,
@@ -20,7 +21,6 @@ import {
 } from '@discordjs/core';
 import { RestEvents } from '@discordjs/rest';
 import { ManagerShardEventsMap } from '@discordjs/ws';
-import BotClient from './client.js';
 
 interface BotRestEvent<K extends keyof RestEvents> {
     readonly type: 'on' | 'once';
@@ -31,11 +31,11 @@ interface BotRestEvent<K extends keyof RestEvents> {
 interface BotWebSocketEvent<K extends keyof ManagerShardEventsMap> {
     readonly type: 'on' | 'once';
     readonly name: K;
-    readonly execute: (...argsss: ManagerShardEventsMap[K]) => Promise<void>;
+    readonly execute: (...args: ManagerShardEventsMap[K]) => Promise<void>;
 }
 
 type props<K extends keyof MappedEvents> = MappedEvents[K][0] & {
-    client: BotClient;
+    client: Client;
 };
 
 interface BotEvent<K extends keyof MappedEvents> {

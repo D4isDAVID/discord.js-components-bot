@@ -3,7 +3,7 @@ import {
     BotCommand,
     BotComponent,
     BotWebSocketEvent,
-} from '../../bot/component-data.js';
+} from '../../component-data.js';
 
 let ping = -1;
 const pingMessage = (p: string) => `🏓 Pong! \`${p}\``;
