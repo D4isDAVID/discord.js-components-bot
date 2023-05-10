@@ -7,7 +7,7 @@ import { REST } from '@discordjs/rest';
 import { WebSocketManager } from '@discordjs/ws';
 import { env } from 'node:process';
 import { URL } from 'node:url';
-import loadComponents from './components-loader.js';
+import loadComponents from './component-loader.js';
 
 import dotenv from 'dotenv';
 dotenv.config();
