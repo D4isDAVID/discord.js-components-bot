@@ -1,6 +1,5 @@
-import { Client, GatewayDispatchEvents } from '@discordjs/core';
+import { API } from '@discordjs/core';
 import { REST } from '@discordjs/rest';
-import { WebSocketManager } from '@discordjs/ws';
 import { env, stdout } from 'node:process';
 import { URL } from 'node:url';
 import loadComponents from './components-loader.js';
@@ -9,13 +8,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const rest = new REST({ version: '10' }).setToken(env.BOT_TOKEN!);
-const ws = new WebSocketManager({
-    token: env.BOT_TOKEN!,
-    intents: 0,
-    rest,
-});
 
-const client = new Client({ rest, ws });
+const api = new API(rest);
 const interactions = await loadComponents(
     new URL('./components', import.meta.url)
 );
@@ -26,14 +20,13 @@ const commands = Array.from(interactions.commands, (entry) => {
 });
 console.log('Done!');
 
-client.on(GatewayDispatchEvents.Ready, async ({ api, data }) => {
-    stdout.write('Deploying commands... ');
-    api.applicationCommands
-        .bulkOverwriteGlobalCommands(data.application.id, commands)
-        .then(() => {
-            console.log('Done!');
-            ws.destroy();
-        });
-});
+stdout.write('Fetching application info... ');
+const application = await api.oauth2.getCurrentBotApplicationInformation();
+console.log('Done!');
 
-await ws.connect();
+stdout.write('Deploying commands... ');
+await api.applicationCommands.bulkOverwriteGlobalCommands(
+    application.id,
+    commands
+);
+console.log('Done!');
