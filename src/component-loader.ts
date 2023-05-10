@@ -1,5 +1,6 @@
 import { Collection } from '@discordjs/collection';
 import { Client } from '@discordjs/core';
+import { WebSocketManager } from '@discordjs/ws';
 import { readdir } from 'node:fs/promises';
 import { stdout } from 'node:process';
 import { clearLine, moveCursor } from 'node:readline';
@@ -49,7 +50,10 @@ const loadComponents = async (componentsUrl: URL, client?: Client) => {
                 client.rest[event.type](event.name, event.execute);
             });
             wsEvents?.map((event) => {
-                client.ws[event.type](event.name, event.execute);
+                (client.gateway as WebSocketManager)[event.type](
+                    event.name,
+                    event.execute
+                );
             });
             events?.map((event) => {
                 client[event.type](event.name, (props) =>

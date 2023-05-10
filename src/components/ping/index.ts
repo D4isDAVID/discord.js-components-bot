@@ -1,4 +1,4 @@
-import { WebSocketShardEvents } from '@discordjs/ws';
+import { WebSocketManager, WebSocketShardEvents } from '@discordjs/ws';
 import {
     BotCommand,
     BotComponent,
@@ -26,9 +26,12 @@ const pingCommand = {
 
         if (ping < 0) {
             const p = new Promise<void>((resolve) => {
-                client.ws.once(WebSocketShardEvents.HeartbeatComplete, () => {
-                    resolve();
-                });
+                (client.gateway as WebSocketManager).once(
+                    WebSocketShardEvents.HeartbeatComplete,
+                    () => {
+                        resolve();
+                    }
+                );
             });
             method = 'editReply';
             await api.interactions.reply(interaction.id, interaction.token, {

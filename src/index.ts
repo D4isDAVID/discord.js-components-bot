@@ -13,13 +13,13 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const rest = new REST({ version: '10' }).setToken(env.BOT_TOKEN!);
-const ws = new WebSocketManager({
+const gateway = new WebSocketManager({
     token: env.BOT_TOKEN!,
     intents: 0,
     rest,
 });
 
-const client = new Client({ rest, ws });
+const client = new Client({ rest, gateway });
 const { commands, messageComponents, modals } = await loadComponents(
     new URL('./components', import.meta.url),
     client
@@ -66,4 +66,4 @@ client.on(GatewayDispatchEvents.Ready, ({ data }) => {
     console.log(`Ready as ${username}#${discriminator}`);
 });
 
-await ws.connect();
+await gateway.connect();
