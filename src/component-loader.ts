@@ -1,5 +1,5 @@
 import { Collection } from '@discordjs/collection';
-import { Client } from '@discordjs/core';
+import { APIApplicationCommandInteraction, Client } from '@discordjs/core';
 import { WebSocketManager } from '@discordjs/ws';
 import { readdir } from 'node:fs/promises';
 import { stdout } from 'node:process';
@@ -25,7 +25,10 @@ const loadComponents = async (componentsUrl: URL, client?: Client) => {
         messageComponents: new Collection(),
         modals: new Collection(),
     } as {
-        readonly commands: Collection<string, BotCommand>;
+        readonly commands: Collection<
+            string,
+            BotCommand<APIApplicationCommandInteraction>
+        >;
         readonly messageComponents: Collection<
             string,
             BotMessageComponent<BotMessageComponentType>

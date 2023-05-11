@@ -3,10 +3,14 @@ import {
     APIApplicationCommandInteraction,
     APIBaseInteraction,
     APIButtonComponentWithCustomId,
-    APIMessageButtonInteractionData,
+    APIChatInputApplicationCommandInteraction,
+    APIInteraction,
     APIMessageChannelSelectInteractionData,
+    APIMessageComponentButtonInteraction,
+    APIMessageComponentSelectMenuInteraction,
     APIMessageMentionableSelectInteractionData,
     APIMessageRoleSelectInteractionData,
+    APIMessageSelectMenuInteractionData,
     APIMessageStringSelectInteractionData,
     APIMessageUserSelectInteractionData,
     APIModalInteractionResponseCallbackData,
@@ -17,7 +21,8 @@ import {
     GatewayDispatchEvents,
     InteractionType,
     MappedEvents,
-    RESTPostAPIApplicationCommandsJSONBody,
+    RESTPostAPIChatInputApplicationCommandsJSONBody,
+    RESTPostAPIContextMenuApplicationCommandsJSONBody,
 } from '@discordjs/core';
 import { RestEvents } from '@discordjs/rest';
 import { ManagerShardEventsMap } from '@discordjs/ws';
@@ -44,18 +49,24 @@ interface BotEvent<K extends keyof MappedEvents> {
     readonly execute: (props: props<K>) => Promise<void>;
 }
 
-interface BotCommand {
-    readonly data: RESTPostAPIApplicationCommandsJSONBody;
-    readonly execute: (
-        props: props<GatewayDispatchEvents.InteractionCreate> & {
-            data: APIApplicationCommandInteraction;
-        }
-    ) => Promise<void>;
-    readonly autocomplete?: (
-        props: props<GatewayDispatchEvents.InteractionCreate> & {
-            data: APIApplicationCommandAutocompleteInteraction;
-        }
-    ) => Promise<void>;
+type BotInteractionExecute<T extends APIInteraction> = (
+    props: props<GatewayDispatchEvents.InteractionCreate> & { data: T }
+) => Promise<void>;
+
+type BotCommandAutocomplete = (
+    props: props<GatewayDispatchEvents.InteractionCreate> & {
+        data: APIApplicationCommandAutocompleteInteraction;
+    }
+) => Promise<void>;
+
+interface BotCommand<T extends APIApplicationCommandInteraction> {
+    readonly data: T extends APIChatInputApplicationCommandInteraction
+        ? RESTPostAPIChatInputApplicationCommandsJSONBody
+        : RESTPostAPIContextMenuApplicationCommandsJSONBody;
+    readonly execute: BotInteractionExecute<T>;
+    readonly autocomplete?: T extends APIChatInputApplicationCommandInteraction
+        ? BotCommandAutocomplete
+        : never;
 }
 
 type BotMessageComponentType =
@@ -87,41 +98,36 @@ interface BotMessageComponentData {
     };
 }
 
-interface BotMessageComponentInteractionData {
-    [ComponentType.Button]: APIMessageButtonInteractionData;
-    [ComponentType.StringSelect]: APIMessageStringSelectInteractionData;
-    [ComponentType.UserSelect]: APIMessageUserSelectInteractionData;
-    [ComponentType.RoleSelect]: APIMessageRoleSelectInteractionData;
-    [ComponentType.MentionableSelect]: APIMessageMentionableSelectInteractionData;
-    [ComponentType.ChannelSelect]: APIMessageChannelSelectInteractionData;
+type BotSelectMenuInteraction<T extends APIMessageSelectMenuInteractionData> =
+    APIMessageComponentSelectMenuInteraction &
+        APIBaseInteraction<InteractionType.MessageComponent, T>;
+
+interface BotMessageComponentInteraction {
+    [ComponentType.Button]: APIMessageComponentButtonInteraction;
+    [ComponentType.StringSelect]: BotSelectMenuInteraction<APIMessageStringSelectInteractionData>;
+    [ComponentType.UserSelect]: BotSelectMenuInteraction<APIMessageUserSelectInteractionData>;
+    [ComponentType.RoleSelect]: BotSelectMenuInteraction<APIMessageRoleSelectInteractionData>;
+    [ComponentType.MentionableSelect]: BotSelectMenuInteraction<APIMessageMentionableSelectInteractionData>;
+    [ComponentType.ChannelSelect]: BotSelectMenuInteraction<APIMessageChannelSelectInteractionData>;
+    [ComponentType.ActionRow]: never;
+    [ComponentType.TextInput]: never;
 }
 
-interface BotMessageComponent<K extends BotMessageComponentType> {
-    readonly data: BotMessageComponentData[K];
-    readonly execute: (
-        props: props<GatewayDispatchEvents.InteractionCreate> & {
-            data: APIBaseInteraction<
-                InteractionType.MessageComponent,
-                BotMessageComponentInteractionData[K]
-            >;
-        }
-    ) => Promise<void>;
+interface BotMessageComponent<T extends BotMessageComponentType> {
+    readonly data: BotMessageComponentData[T];
+    readonly execute: BotInteractionExecute<BotMessageComponentInteraction[T]>;
 }
 
 interface BotModal {
     readonly data: APIModalInteractionResponseCallbackData;
-    readonly execute: (
-        props: props<GatewayDispatchEvents.InteractionCreate> & {
-            data: APIModalSubmitInteraction;
-        }
-    ) => Promise<void>;
+    readonly execute: BotInteractionExecute<APIModalSubmitInteraction>;
 }
 
 interface BotComponent {
     readonly restEvents?: BotRestEvent<keyof RestEvents>[];
     readonly wsEvents?: BotWebSocketEvent<keyof ManagerShardEventsMap>[];
     readonly events?: BotEvent<keyof MappedEvents>[];
-    readonly commands?: BotCommand[];
+    readonly commands?: BotCommand<APIApplicationCommandInteraction>[];
     readonly messageComponents?: BotMessageComponent<BotMessageComponentType>[];
     readonly modals?: BotModal[];
 }
@@ -129,9 +135,15 @@ interface BotComponent {
 export {
     BotRestEvent,
     BotWebSocketEvent,
+    props,
     BotEvent,
+    BotInteractionExecute,
+    BotCommandAutocomplete,
     BotCommand,
     BotMessageComponentType,
+    BotMessageComponentData,
+    BotSelectMenuInteraction,
+    BotMessageComponentInteraction,
     BotMessageComponent,
     BotModal,
     BotComponent,

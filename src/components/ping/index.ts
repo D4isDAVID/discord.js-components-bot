@@ -1,3 +1,4 @@
+import { APIChatInputApplicationCommandInteraction } from '@discordjs/core';
 import { WebSocketManager, WebSocketShardEvents } from '@discordjs/ws';
 import {
     BotCommand,
@@ -48,7 +49,7 @@ const pingCommand = {
             }
         );
     },
-} as BotCommand;
+} as BotCommand<APIChatInputApplicationCommandInteraction>;
 
 export default {
     wsEvents: [heartbeatEvent],

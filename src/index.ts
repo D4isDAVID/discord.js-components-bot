@@ -7,6 +7,10 @@ import { REST } from '@discordjs/rest';
 import { WebSocketManager } from '@discordjs/ws';
 import { env } from 'node:process';
 import { URL } from 'node:url';
+import {
+    BotMessageComponentInteraction,
+    BotMessageComponentType,
+} from './component-data.js';
 import loadComponents from './component-loader.js';
 
 import dotenv from 'dotenv';
@@ -48,7 +52,7 @@ client.on(GatewayDispatchEvents.InteractionCreate, async (props) => {
             if (component?.data.type === interaction.data.component_type)
                 await component?.execute({
                     ...props,
-                    data: interaction,
+                    data: interaction as BotMessageComponentInteraction[BotMessageComponentType],
                     client,
                 });
             break;
