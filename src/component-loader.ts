@@ -18,7 +18,7 @@ const loadComponents = async (componentsUrl: URL, client?: Client) => {
 
     const components = (
         await readdir(componentsUrl, { withFileTypes: true })
-    ).filter((f) => f.isDirectory() && f.name !== 'example');
+    ).filter((f) => f.isDirectory());
 
     const interactions = {
         commands: new Collection(),
