@@ -67,7 +67,8 @@ client.on(GatewayDispatchEvents.InteractionCreate, async (props) => {
 
 client.once(GatewayDispatchEvents.Ready, ({ data }) => {
     const { username, discriminator } = data.user;
-    console.log(`Ready as ${username}#${discriminator}`);
+    console.log(`Ready as ${username}#${discriminator}!`);
 });
 
+console.log('Connecting to the Discord gateway...');
 await gateway.connect();

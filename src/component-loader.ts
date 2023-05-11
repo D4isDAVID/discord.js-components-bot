@@ -21,19 +21,15 @@ const loadComponents = async (componentsUrl: URL, client?: Client) => {
     ).filter((f) => f.isDirectory());
 
     const interactions = {
-        commands: new Collection(),
-        messageComponents: new Collection(),
-        modals: new Collection(),
-    } as {
-        readonly commands: Collection<
+        commands: new Collection<
             string,
             BotCommand<APIApplicationCommandInteraction>
-        >;
-        readonly messageComponents: Collection<
+        >(),
+        messageComponents: new Collection<
             string,
             BotMessageComponent<BotMessageComponentType>
-        >;
-        readonly modals: Collection<string, BotModal>;
+        >(),
+        modals: new Collection<string, BotModal>(),
     };
 
     for await (const folder of components) {
