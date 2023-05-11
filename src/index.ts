@@ -61,7 +61,7 @@ client.on(GatewayDispatchEvents.InteractionCreate, async (props) => {
     }
 });
 
-client.on(GatewayDispatchEvents.Ready, ({ data }) => {
+client.once(GatewayDispatchEvents.Ready, ({ data }) => {
     const { username, discriminator } = data.user;
     console.log(`Ready as ${username}#${discriminator}`);
 });
