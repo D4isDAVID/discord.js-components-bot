@@ -36,29 +36,37 @@ client.on(GatewayDispatchEvents.InteractionCreate, async (props) => {
     switch (interaction.type) {
         case InteractionType.ApplicationCommand:
             const command = commands.get(interaction.data.name);
-            await command?.execute({ ...props, data: interaction, client });
+            await command
+                ?.execute({ ...props, data: interaction, client })
+                .catch(console.error);
             break;
         case InteractionType.ApplicationCommandAutocomplete:
             const autocompleteCommand = commands.get(interaction.data.name);
             if (!autocompleteCommand?.autocomplete) break;
-            await autocompleteCommand?.autocomplete({
-                ...props,
-                data: interaction,
-                client,
-            });
+            await autocompleteCommand
+                ?.autocomplete({
+                    ...props,
+                    data: interaction,
+                    client,
+                })
+                .catch(console.error);
             break;
         case InteractionType.MessageComponent:
             const component = messageComponents.get(interaction.data.custom_id);
             if (component?.data.type === interaction.data.component_type)
-                await component?.execute({
-                    ...props,
-                    data: interaction as BotMessageComponentInteraction[BotMessageComponentType],
-                    client,
-                });
+                await component
+                    ?.execute({
+                        ...props,
+                        data: interaction as BotMessageComponentInteraction[BotMessageComponentType],
+                        client,
+                    })
+                    .catch(console.error);
             break;
         case InteractionType.ModalSubmit:
             const modal = modals.get(interaction.data.custom_id);
-            await modal?.execute({ ...props, data: interaction, client });
+            await modal
+                ?.execute({ ...props, data: interaction, client })
+                .catch(console.error);
             break;
         default:
             break;
