@@ -3,10 +3,10 @@ import button from './button.js';
 import command from './command.js';
 import modal from './modal.js';
 import selectMenu from './select-menu.js';
-import subcommandsCommand from './subcommands-command.js';
+import subcommands from './subcommands.js';
 
 export default {
-    commands: [command, subcommandsCommand],
+    commands: [command, subcommands],
     messageComponents: [button, selectMenu],
     modals: [modal],
 } as BotComponent;
