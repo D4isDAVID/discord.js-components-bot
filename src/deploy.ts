@@ -1,13 +1,11 @@
 import { API } from '@discordjs/core';
 import { REST } from '@discordjs/rest';
-import { env, stdout } from 'node:process';
+import { stdout } from 'node:process';
 import { URL } from 'node:url';
 import loadComponents from './component-loader.js';
+import { botToken } from './env.js';
 
-import dotenv from 'dotenv';
-dotenv.config();
-
-const rest = new REST({ version: '10' }).setToken(env.BOT_TOKEN!);
+const rest = new REST({ version: '10' }).setToken(botToken);
 
 const api = new API(rest);
 const interactions = await loadComponents(

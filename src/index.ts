@@ -5,22 +5,20 @@ import {
 } from '@discordjs/core';
 import { REST } from '@discordjs/rest';
 import { WebSocketManager } from '@discordjs/ws';
-import { env } from 'node:process';
 import { URL } from 'node:url';
 import {
     BotMessageComponentInteraction,
     BotMessageComponentType,
 } from './component-data.js';
 import loadComponents from './component-loader.js';
+import { botToken, shardCount } from './env.js';
 
-import dotenv from 'dotenv';
-dotenv.config();
-
-const rest = new REST({ version: '10' }).setToken(env.BOT_TOKEN!);
+const rest = new REST({ version: '10' }).setToken(botToken);
 const gateway = new WebSocketManager({
-    token: env.BOT_TOKEN!,
+    token: botToken,
     intents: 0,
     rest,
+    shardCount,
 });
 
 const client = new Client({ rest, gateway });
