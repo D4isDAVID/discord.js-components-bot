@@ -3,7 +3,7 @@ import {
     BotSubcommand,
     generateSubcommandGroup,
     generateSubcommandsCommand,
-} from '../../component-utils.js';
+} from '../../subcommand-utils.js';
 
 const exampleSubcommand: BotSubcommand = {
     data: {
