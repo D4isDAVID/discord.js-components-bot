@@ -1,5 +1,5 @@
 import { ComponentType, MessageFlags } from '@discordjs/core';
-import { BotMessageComponent } from '../../component-data.js';
+import { StringSelect } from '../../component-data.js';
 import button from './button.js';
 
 export default {
@@ -41,4 +41,4 @@ export default {
                 break;
         }
     },
-} as BotMessageComponent<ComponentType.StringSelect>;
+} as StringSelect;

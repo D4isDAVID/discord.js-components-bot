@@ -1,16 +1,15 @@
 import { Collection } from '@discordjs/collection';
-import { APIApplicationCommandInteraction, Client } from '@discordjs/core';
+import { Client } from '@discordjs/core';
 import { WebSocketManager } from '@discordjs/ws';
 import { readdir } from 'node:fs/promises';
 import { stdout } from 'node:process';
 import { clearLine, moveCursor } from 'node:readline';
 import { URL } from 'node:url';
 import {
-    BotCommand,
-    BotComponent,
-    BotMessageComponent,
-    BotMessageComponentType,
-    BotModal,
+    ApplicationCommand,
+    IComponent,
+    MessageComponent,
+    Modal,
 } from './component-data.js';
 
 const loadComponents = async (componentsUrl: URL, client?: Client) => {
@@ -21,19 +20,14 @@ const loadComponents = async (componentsUrl: URL, client?: Client) => {
     ).filter((f) => f.isDirectory());
 
     const interactions = {
-        commands: new Collection<
-            string,
-            BotCommand<APIApplicationCommandInteraction>
-        >(),
-        messageComponents: new Collection<
-            string,
-            BotMessageComponent<BotMessageComponentType>
-        >(),
-        modals: new Collection<string, BotModal>(),
+        commands: new Collection<string, ApplicationCommand>(),
+        messageComponents: new Collection<string, MessageComponent>(),
+        modals: new Collection<string, Modal>(),
     };
 
     for await (const folder of components) {
         stdout.write(folder.name);
+
         const {
             restEvents,
             wsEvents,
@@ -42,7 +36,7 @@ const loadComponents = async (componentsUrl: URL, client?: Client) => {
             messageComponents,
             modals,
         } = (await import(`${componentsUrl.pathname}/${folder.name}/index.js`))
-            .default as BotComponent;
+            .default as IComponent;
 
         if (client) {
             restEvents?.map((event) => {
@@ -57,8 +51,8 @@ const loadComponents = async (componentsUrl: URL, client?: Client) => {
                 );
             });
             events?.map((event) => {
-                client[event.type](event.name, (props) =>
-                    event.execute({ ...props, client }).catch(console.error)
+                client[event.type](event.name, (...props) =>
+                    event.execute(...props).catch(console.error)
                 );
             });
         }

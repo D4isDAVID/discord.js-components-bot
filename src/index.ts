@@ -1,27 +1,8 @@
-import {
-    Client,
-    GatewayDispatchEvents,
-    InteractionType,
-} from '@discordjs/core';
-import { REST } from '@discordjs/rest';
-import { WebSocketManager } from '@discordjs/ws';
+import { GatewayDispatchEvents, InteractionType } from '@discordjs/core';
 import { URL } from 'node:url';
-import {
-    BotMessageComponentInteraction,
-    BotMessageComponentType,
-} from './component-data.js';
+import { client, gateway } from './client.js';
 import loadComponents from './component-loader.js';
-import { botToken, shardCount } from './env.js';
 
-const rest = new REST({ version: '10' }).setToken(botToken);
-const gateway = new WebSocketManager({
-    token: botToken,
-    intents: 0,
-    rest,
-    shardCount,
-});
-
-const client = new Client({ rest, gateway });
 const { commands, messageComponents, modals } = await loadComponents(
     new URL('./components', import.meta.url),
     client
@@ -35,7 +16,7 @@ client.on(GatewayDispatchEvents.InteractionCreate, async (props) => {
         case InteractionType.ApplicationCommand:
             const command = commands.get(interaction.data.name);
             await command
-                ?.execute({ ...props, data: interaction, client })
+                ?.execute({ ...props, data: interaction })
                 .catch(console.error);
             break;
         case InteractionType.ApplicationCommandAutocomplete:
@@ -45,7 +26,6 @@ client.on(GatewayDispatchEvents.InteractionCreate, async (props) => {
                 ?.autocomplete({
                     ...props,
                     data: interaction,
-                    client,
                 })
                 .catch(console.error);
             break;
@@ -55,15 +35,14 @@ client.on(GatewayDispatchEvents.InteractionCreate, async (props) => {
                 await component
                     ?.execute({
                         ...props,
-                        data: interaction as BotMessageComponentInteraction[BotMessageComponentType],
-                        client,
+                        data: interaction,
                     })
                     .catch(console.error);
             break;
         case InteractionType.ModalSubmit:
             const modal = modals.get(interaction.data.custom_id);
             await modal
-                ?.execute({ ...props, data: interaction, client })
+                ?.execute({ ...props, data: interaction })
                 .catch(console.error);
             break;
         default:

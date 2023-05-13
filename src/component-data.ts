@@ -1,25 +1,25 @@
 import {
     APIApplicationCommandAutocompleteInteraction,
     APIApplicationCommandInteraction,
-    APIBaseInteraction,
     APIButtonComponentWithCustomId,
+    APIChannelSelectComponent,
     APIChatInputApplicationCommandInteraction,
+    APIContextMenuInteraction,
     APIInteraction,
-    APIMessageChannelSelectInteractionData,
+    APIMentionableSelectComponent,
+    APIMessageApplicationCommandInteraction,
     APIMessageComponentButtonInteraction,
+    APIMessageComponentInteraction,
     APIMessageComponentSelectMenuInteraction,
-    APIMessageMentionableSelectInteractionData,
-    APIMessageRoleSelectInteractionData,
-    APIMessageSelectMenuInteractionData,
-    APIMessageStringSelectInteractionData,
-    APIMessageUserSelectInteractionData,
     APIModalInteractionResponseCallbackData,
     APIModalSubmitInteraction,
-    APISelectMenuComponent,
-    Client,
+    APIRoleSelectComponent,
+    APIStringSelectComponent,
+    APIUserApplicationCommandInteraction,
+    APIUserSelectComponent,
+    ApplicationCommandType,
     ComponentType,
     GatewayDispatchEvents,
-    InteractionType,
     MappedEvents,
     RESTPostAPIChatInputApplicationCommandsJSONBody,
     RESTPostAPIContextMenuApplicationCommandsJSONBody,
@@ -27,124 +27,143 @@ import {
 import { RestEvents } from '@discordjs/rest';
 import { ManagerShardEventsMap } from '@discordjs/ws';
 
-interface BotRestEvent<K extends keyof RestEvents> {
+type EventName =
+    | keyof RestEvents
+    | keyof ManagerShardEventsMap
+    | keyof MappedEvents;
+
+type EventExecuteArgs<T extends EventName> = T extends keyof RestEvents
+    ? RestEvents[T]
+    : T extends keyof ManagerShardEventsMap
+    ? ManagerShardEventsMap[T]
+    : T extends keyof MappedEvents
+    ? MappedEvents[T]
+    : never;
+
+interface IEvent<T extends EventName> {
     readonly type: 'on' | 'once';
-    readonly name: K;
-    readonly execute: (...args: RestEvents[K]) => Promise<void>;
+    readonly name: T;
+    readonly execute: (...args: EventExecuteArgs<T>) => Promise<void>;
 }
 
-interface BotWebSocketEvent<K extends keyof ManagerShardEventsMap> {
-    readonly type: 'on' | 'once';
-    readonly name: K;
-    readonly execute: (...args: ManagerShardEventsMap[K]) => Promise<void>;
+type ContextMenuInteractionType<T extends APIContextMenuInteraction> =
+    T extends APIUserApplicationCommandInteraction
+        ? ApplicationCommandType.User
+        : T extends APIMessageApplicationCommandInteraction
+        ? ApplicationCommandType.Message
+        : never;
+
+interface MessageComponentDataMap {
+    [ComponentType.Button]: APIButtonComponentWithCustomId;
+    [ComponentType.StringSelect]: APIStringSelectComponent;
+    [ComponentType.UserSelect]: APIUserSelectComponent;
+    [ComponentType.RoleSelect]: APIRoleSelectComponent;
+    [ComponentType.MentionableSelect]: APIMentionableSelectComponent;
+    [ComponentType.ChannelSelect]: APIChannelSelectComponent;
 }
 
-type props<K extends keyof MappedEvents> = MappedEvents[K][0] & {
-    client: Client;
-};
+type InteractionData<T extends APIInteraction> =
+    T extends APIApplicationCommandInteraction
+        ? T extends APIChatInputApplicationCommandInteraction
+            ? RESTPostAPIChatInputApplicationCommandsJSONBody
+            : T extends APIContextMenuInteraction
+            ? RESTPostAPIContextMenuApplicationCommandsJSONBody & {
+                  type: ContextMenuInteractionType<T>;
+              }
+            : never
+        : T extends APIMessageComponentInteraction
+        ? MessageComponentDataMap[T['data']['component_type']]
+        : T extends APIModalSubmitInteraction
+        ? APIModalInteractionResponseCallbackData
+        : never;
 
-interface BotEvent<K extends keyof MappedEvents> {
-    readonly type: 'on' | 'once';
-    readonly name: K;
-    readonly execute: (props: props<K>) => Promise<void>;
-}
+type InteractionExecuteArgs<T extends APIInteraction> =
+    EventExecuteArgs<GatewayDispatchEvents.InteractionCreate> &
+        [
+            {
+                data: T;
+            }
+        ];
 
-type BotInteractionExecute<T extends APIInteraction> = (
-    props: props<GatewayDispatchEvents.InteractionCreate> & { data: T }
-) => Promise<void>;
-
-type BotCommandAutocomplete = (
-    props: props<GatewayDispatchEvents.InteractionCreate> & {
-        data: APIApplicationCommandAutocompleteInteraction;
-    }
-) => Promise<void>;
-
-interface BotCommand<T extends APIApplicationCommandInteraction> {
-    readonly data: T extends APIChatInputApplicationCommandInteraction
-        ? RESTPostAPIChatInputApplicationCommandsJSONBody
-        : RESTPostAPIContextMenuApplicationCommandsJSONBody;
-    readonly execute: BotInteractionExecute<T>;
+interface IInteraction<T extends APIInteraction> {
+    readonly data: InteractionData<T>;
+    readonly execute: (...props: InteractionExecuteArgs<T>) => Promise<void>;
     readonly autocomplete?: T extends APIChatInputApplicationCommandInteraction
-        ? BotCommandAutocomplete
+        ? (
+              ...props: InteractionExecuteArgs<APIApplicationCommandAutocompleteInteraction>
+          ) => Promise<void>
         : never;
 }
 
-type BotMessageComponentType =
-    | ComponentType.Button
-    | ComponentType.StringSelect
-    | ComponentType.UserSelect
-    | ComponentType.RoleSelect
-    | ComponentType.MentionableSelect
-    | ComponentType.ChannelSelect;
+type SelectMenuInteractionWithType<T extends ComponentType> =
+    APIMessageComponentSelectMenuInteraction & { data: { component_type: T } };
 
-interface BotMessageComponentData {
-    [ComponentType.Button]: APIButtonComponentWithCustomId & {
-        type: ComponentType.Button;
-    };
-    [ComponentType.StringSelect]: APISelectMenuComponent & {
-        type: ComponentType.StringSelect;
-    };
-    [ComponentType.UserSelect]: APISelectMenuComponent & {
-        type: ComponentType.UserSelect;
-    };
-    [ComponentType.RoleSelect]: APISelectMenuComponent & {
-        type: ComponentType.RoleSelect;
-    };
-    [ComponentType.MentionableSelect]: APISelectMenuComponent & {
-        type: ComponentType.MentionableSelect;
-    };
-    [ComponentType.ChannelSelect]: APISelectMenuComponent & {
-        type: ComponentType.ChannelSelect;
-    };
-}
+type RestEvent<T extends keyof RestEvents> = IEvent<T>;
+type WebSocketEvent<T extends keyof ManagerShardEventsMap> = IEvent<T>;
+type GatewayEvent<T extends keyof MappedEvents> = IEvent<T>;
 
-type BotSelectMenuInteraction<T extends APIMessageSelectMenuInteractionData> =
-    APIMessageComponentSelectMenuInteraction &
-        APIBaseInteraction<InteractionType.MessageComponent, T>;
+type ApplicationCommand = IInteraction<APIApplicationCommandInteraction>;
+type ChatInputCommand = IInteraction<APIChatInputApplicationCommandInteraction>;
+type ContextMenuCommand = IInteraction<APIContextMenuInteraction>;
+type UserCommand = IInteraction<APIUserApplicationCommandInteraction>;
+type MessageCommand = IInteraction<APIMessageApplicationCommandInteraction>;
 
-interface BotMessageComponentInteraction {
-    [ComponentType.Button]: APIMessageComponentButtonInteraction;
-    [ComponentType.StringSelect]: BotSelectMenuInteraction<APIMessageStringSelectInteractionData>;
-    [ComponentType.UserSelect]: BotSelectMenuInteraction<APIMessageUserSelectInteractionData>;
-    [ComponentType.RoleSelect]: BotSelectMenuInteraction<APIMessageRoleSelectInteractionData>;
-    [ComponentType.MentionableSelect]: BotSelectMenuInteraction<APIMessageMentionableSelectInteractionData>;
-    [ComponentType.ChannelSelect]: BotSelectMenuInteraction<APIMessageChannelSelectInteractionData>;
-    [ComponentType.ActionRow]: never;
-    [ComponentType.TextInput]: never;
-}
+type MessageComponent = IInteraction<APIMessageComponentInteraction>;
+type Button = IInteraction<APIMessageComponentButtonInteraction>;
+type SelectMenu = IInteraction<APIMessageComponentSelectMenuInteraction>;
+type StringSelect = IInteraction<
+    SelectMenuInteractionWithType<ComponentType.StringSelect>
+>;
+type UserSelect = IInteraction<
+    SelectMenuInteractionWithType<ComponentType.UserSelect>
+>;
+type RoleSelect = IInteraction<
+    SelectMenuInteractionWithType<ComponentType.RoleSelect>
+>;
+type MentionableSelect = IInteraction<
+    SelectMenuInteractionWithType<ComponentType.MentionableSelect>
+>;
+type ChannelSelect = IInteraction<
+    SelectMenuInteractionWithType<ComponentType.ChannelSelect>
+>;
 
-interface BotMessageComponent<T extends BotMessageComponentType> {
-    readonly data: BotMessageComponentData[T];
-    readonly execute: BotInteractionExecute<BotMessageComponentInteraction[T]>;
-}
+type Modal = IInteraction<APIModalSubmitInteraction>;
 
-interface BotModal {
-    readonly data: APIModalInteractionResponseCallbackData;
-    readonly execute: BotInteractionExecute<APIModalSubmitInteraction>;
-}
-
-interface BotComponent {
-    readonly restEvents?: BotRestEvent<keyof RestEvents>[];
-    readonly wsEvents?: BotWebSocketEvent<keyof ManagerShardEventsMap>[];
-    readonly events?: BotEvent<keyof MappedEvents>[];
-    readonly commands?: BotCommand<APIApplicationCommandInteraction>[];
-    readonly messageComponents?: BotMessageComponent<BotMessageComponentType>[];
-    readonly modals?: BotModal[];
+interface IComponent {
+    readonly restEvents?: RestEvent<keyof RestEvents>[];
+    readonly wsEvents?: WebSocketEvent<keyof ManagerShardEventsMap>[];
+    readonly events?: GatewayEvent<keyof MappedEvents>[];
+    readonly commands?: ApplicationCommand[];
+    readonly messageComponents?: MessageComponent[];
+    readonly modals?: Modal[];
 }
 
 export {
-    BotRestEvent,
-    BotWebSocketEvent,
-    props,
-    BotEvent,
-    BotInteractionExecute,
-    BotCommandAutocomplete,
-    BotCommand,
-    BotMessageComponentType,
-    BotMessageComponentData,
-    BotSelectMenuInteraction,
-    BotMessageComponentInteraction,
-    BotMessageComponent,
-    BotModal,
-    BotComponent,
+    EventName,
+    EventExecuteArgs,
+    IEvent,
+    ContextMenuInteractionType,
+    MessageComponentDataMap,
+    InteractionData,
+    InteractionExecuteArgs,
+    IInteraction,
+    SelectMenuInteractionWithType,
+    RestEvent,
+    WebSocketEvent,
+    GatewayEvent,
+    ApplicationCommand,
+    ChatInputCommand,
+    ContextMenuCommand,
+    UserCommand,
+    MessageCommand,
+    MessageComponent,
+    Button,
+    SelectMenu,
+    StringSelect,
+    UserSelect,
+    RoleSelect,
+    MentionableSelect,
+    ChannelSelect,
+    Modal,
+    IComponent,
 };

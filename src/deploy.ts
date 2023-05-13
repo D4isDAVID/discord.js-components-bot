@@ -1,13 +1,8 @@
-import { API } from '@discordjs/core';
-import { REST } from '@discordjs/rest';
 import { stdout } from 'node:process';
 import { URL } from 'node:url';
+import { api } from './client.js';
 import loadComponents from './component-loader.js';
-import { botToken } from './env.js';
 
-const rest = new REST({ version: '10' }).setToken(botToken);
-
-const api = new API(rest);
 const interactions = await loadComponents(
     new URL('./components', import.meta.url)
 );

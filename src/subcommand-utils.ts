@@ -1,36 +1,36 @@
 import { Collection } from '@discordjs/collection';
 import {
+    APIApplicationCommandAutocompleteInteraction,
     APIApplicationCommandSubcommandGroupOption,
     APIApplicationCommandSubcommandOption,
     APIChatInputApplicationCommandInteraction,
     RESTPostAPIChatInputApplicationCommandsJSONBody,
 } from '@discordjs/core';
-import {
-    BotCommand,
-    BotCommandAutocomplete,
-    BotInteractionExecute,
-} from './component-data.js';
+import { ChatInputCommand, InteractionExecuteArgs } from './component-data.js';
 
-interface BotSubcommandOrGroup<
+interface ISubcommandOrGroup<
     T extends
         | APIApplicationCommandSubcommandOption
         | APIApplicationCommandSubcommandGroupOption
 > {
     readonly data: T;
-    readonly execute: BotInteractionExecute<APIChatInputApplicationCommandInteraction>;
-    readonly autocomplete?: BotCommandAutocomplete;
+    readonly execute: (
+        ...props: InteractionExecuteArgs<APIChatInputApplicationCommandInteraction>
+    ) => Promise<void>;
+    readonly autocomplete?: (
+        ...props: InteractionExecuteArgs<APIApplicationCommandAutocompleteInteraction>
+    ) => Promise<void>;
 }
 
-type BotSubcommand =
-    BotSubcommandOrGroup<APIApplicationCommandSubcommandOption>;
-type BotSubcommandGroup =
-    BotSubcommandOrGroup<APIApplicationCommandSubcommandGroupOption>;
+type Subcommand = ISubcommandOrGroup<APIApplicationCommandSubcommandOption>;
+type SubcommandGroup =
+    ISubcommandOrGroup<APIApplicationCommandSubcommandGroupOption>;
 
 const generateSubcommandGroup = (
     data: APIApplicationCommandSubcommandGroupOption,
-    subcommandsArray: BotSubcommand[]
+    subcommandsArray: Subcommand[]
 ) => {
-    const subcommands = new Collection<string, BotSubcommand>();
+    const subcommands = new Collection<string, Subcommand>();
     data.options = [];
 
     subcommandsArray.map((subcommand) => {
@@ -55,17 +55,14 @@ const generateSubcommandGroup = (
             if (!subcommand?.autocomplete) return;
             return subcommand?.autocomplete(props);
         },
-    } as BotSubcommandGroup;
+    } as SubcommandGroup;
 };
 
 const generateSubcommandsCommand = (
     data: RESTPostAPIChatInputApplicationCommandsJSONBody,
-    subcommandsArray: (BotSubcommand | BotSubcommandGroup)[]
+    subcommandsArray: (Subcommand | SubcommandGroup)[]
 ) => {
-    const subcommands = new Collection<
-        string,
-        BotSubcommand | BotSubcommandGroup
-    >();
+    const subcommands = new Collection<string, Subcommand | SubcommandGroup>();
     data.options = [];
 
     subcommandsArray.map((subcommand) => {
@@ -90,12 +87,12 @@ const generateSubcommandsCommand = (
             if (!subcommand?.autocomplete) return;
             return subcommand?.autocomplete(props);
         },
-    } as BotCommand<APIChatInputApplicationCommandInteraction>;
+    } as ChatInputCommand;
 };
 
 export {
-    BotSubcommand,
-    BotSubcommandGroup,
+    Subcommand,
+    SubcommandGroup,
     generateSubcommandGroup,
     generateSubcommandsCommand,
 };

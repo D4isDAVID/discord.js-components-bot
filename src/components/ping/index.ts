@@ -1,9 +1,9 @@
-import { APIChatInputApplicationCommandInteraction } from '@discordjs/core';
-import { WebSocketManager, WebSocketShardEvents } from '@discordjs/ws';
+import { WebSocketShardEvents } from '@discordjs/ws';
+import { gateway } from '../../client.js';
 import {
-    BotCommand,
-    BotComponent,
-    BotWebSocketEvent,
+    ChatInputCommand,
+    IComponent,
+    WebSocketEvent,
 } from '../../component-data.js';
 
 let ping = -1;
@@ -15,24 +15,21 @@ const heartbeatEvent = {
     async execute({ latency }) {
         ping = latency;
     },
-} as BotWebSocketEvent<WebSocketShardEvents.HeartbeatComplete>;
+} as WebSocketEvent<WebSocketShardEvents.HeartbeatComplete>;
 
 const pingCommand = {
     data: {
         name: 'ping',
         description: 'Ping command',
     },
-    async execute({ api, data: interaction, client }) {
+    async execute({ api, data: interaction }) {
         let method: 'reply' | 'editReply' = 'reply';
 
         if (ping < 0) {
             const p = new Promise<void>((resolve) => {
-                (client.gateway as WebSocketManager).once(
-                    WebSocketShardEvents.HeartbeatComplete,
-                    () => {
-                        resolve();
-                    }
-                );
+                gateway.once(WebSocketShardEvents.HeartbeatComplete, () => {
+                    resolve();
+                });
             });
             method = 'editReply';
             await api.interactions.reply(interaction.id, interaction.token, {
@@ -49,9 +46,9 @@ const pingCommand = {
             }
         );
     },
-} as BotCommand<APIChatInputApplicationCommandInteraction>;
+} as ChatInputCommand;
 
 export default {
     wsEvents: [heartbeatEvent],
     commands: [pingCommand],
-} as BotComponent;
+} as IComponent;

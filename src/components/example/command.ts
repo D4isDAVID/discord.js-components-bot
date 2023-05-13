@@ -1,9 +1,5 @@
-import {
-    APIChatInputApplicationCommandInteraction,
-    ComponentType,
-    MessageFlags,
-} from '@discordjs/core';
-import { BotCommand } from '../../component-data.js';
+import { ComponentType, MessageFlags } from '@discordjs/core';
+import { ChatInputCommand } from '../../component-data.js';
 import selectMenu from './select-menu.js';
 
 export default {
@@ -22,4 +18,4 @@ export default {
             flags: MessageFlags.Ephemeral,
         });
     },
-} as BotCommand<APIChatInputApplicationCommandInteraction>;
+} as ChatInputCommand;

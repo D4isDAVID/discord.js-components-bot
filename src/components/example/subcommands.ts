@@ -1,11 +1,11 @@
 import { ApplicationCommandOptionType, MessageFlags } from '@discordjs/core';
 import {
-    BotSubcommand,
+    Subcommand,
     generateSubcommandGroup,
     generateSubcommandsCommand,
 } from '../../subcommand-utils.js';
 
-const exampleSubcommand: BotSubcommand = {
+const exampleSubcommand = {
     data: {
         name: 'subcommand',
         description: 'An example subcommand',
@@ -17,7 +17,7 @@ const exampleSubcommand: BotSubcommand = {
             flags: MessageFlags.Ephemeral,
         });
     },
-};
+} as Subcommand;
 
 export default generateSubcommandsCommand(
     {

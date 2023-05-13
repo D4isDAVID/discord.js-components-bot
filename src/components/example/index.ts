@@ -1,4 +1,4 @@
-import { BotComponent } from '../../component-data.js';
+import { IComponent } from '../../component-data.js';
 import button from './button.js';
 import command from './command.js';
 import modal from './modal.js';
@@ -9,4 +9,4 @@ export default {
     commands: [command, subcommands],
     messageComponents: [button, selectMenu],
     modals: [modal],
-} as BotComponent;
+} as IComponent;
