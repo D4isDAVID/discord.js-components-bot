@@ -1,7 +1,7 @@
 # Discord.js Components Bot
 
-This is a [discord.js](https://discord.js.org) bot template with a components system.
-It is written in TypeScript, and uses `@discordjs/core`.
+This is a [discord.js] bot template with a components system.
+It is written in [TypeScript], and uses [`@discordjs/core`][@discordjs/core].
 
 Out of the box, the template only adds a ping and some example commands.
 Database support is also not included by default, and can be manually added.
@@ -30,16 +30,21 @@ commands with subcommands and subcommand groups with ease
 ## Configuration
 
 - Make a copy of the [`.env.example`](./.env.example) file
-- Name the copy `.env`
+- Name the new copy `.env`
 - Configure the file
 
 ## Scripts
 
-- `lint` - Lint your code with [Prettier](https://prettier.io/)
-- `format` - Format your code with Prettier
-- `build` - Build your code with the TypeScript compiler
+- `lint` - Lint your code with [Prettier]
+- `format` - Format your code with [Prettier]
+- `build` - Build your code with the [TypeScript] compiler
 - `test` - Test your code (lint & build)
 - `deploy` - Build your code & deploy commands to Discord
 - `start` - Build your code & start your bot
 - `node dist/deploy.js` - Deploy commands to Discord
 - `node .` - Start your bot
+
+[discord.js]: https://discord.js.org
+[@discordjs/core]: https://discord.js.org/docs
+[prettier]: https://prettier.io
+[typescript]: https://typescriptlang.org
