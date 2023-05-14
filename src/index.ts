@@ -1,7 +1,7 @@
 import { GatewayDispatchEvents, InteractionType } from '@discordjs/core';
 import { URL } from 'node:url';
-import { client, gateway } from './client.js';
 import loadComponents from './component-loader.js';
+import { client, gateway } from './env.js';
 
 const { commands, messageComponents, modals } = await loadComponents(
     new URL('./components', import.meta.url),

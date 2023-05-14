@@ -1,10 +1,10 @@
 import { WebSocketShardEvents } from '@discordjs/ws';
-import { gateway } from '../../client.js';
 import {
     ChatInputCommand,
     IComponent,
     WebSocketEvent,
 } from '../../component-data.js';
+import { gateway } from '../../env.js';
 
 let ping = -1;
 const pingMessage = (p: string) => `🏓 Pong! \`${p}\``;
