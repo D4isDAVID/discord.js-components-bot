@@ -8,19 +8,20 @@
     "lint": "prettier --ignore-path .gitignore -c .",
     "format": "prettier --ignore-path .gitignore -w .",
     "build": "tsc",
+    "build:watch": "tsc --watch",
     "test": "npm run build && npm run lint",
-    "deploy": "npm run build && node dist/deploy.js",
-    "start": "npm run build && node ."
+    "deploy": "node --require dotenv/config dist/deploy.js",
+    "start": "node --require dotenv/config ."
   },
   "dependencies": {
     "@discordjs/collection": "^1.5.1",
     "@discordjs/core": "^0.6.0",
     "@discordjs/rest": "^1.7.1",
-    "@discordjs/ws": "^0.8.3",
-    "dotenv": "^16.0.3"
+    "@discordjs/ws": "^0.8.3"
   },
   "devDependencies": {
     "@types/node": "^20.1.1",
+    "dotenv": "^16.0.3",
     "prettier": "^2.8.8",
     "typescript": "^5.0.4"
   }
