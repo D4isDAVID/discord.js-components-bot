@@ -35,14 +35,13 @@ commands with subcommands and subcommand groups with ease
 
 ## Scripts
 
-- `lint` - Lint your code with [Prettier]
-- `format` - Format your code with [Prettier]
-- `build` - Build your code with the [TypeScript] compiler
-- `test` - Test your code (lint & build)
-- `deploy` - Build your code & deploy commands to Discord
-- `start` - Build your code & start your bot
-- `node dist/deploy.js` - Deploy commands to Discord
-- `node .` - Start your bot
+- `npm run lint` - Lint your code with [Prettier]
+- `npm run format` - Format your code with [Prettier]
+- `npm run build` - Build your code with the [TypeScript] compiler
+- `npm run build:watch` - Build your code in watch mode
+- `npm run test` - Test your code (lint & build)
+- `npm run deploy` - Build your code & deploy commands to Discord
+- `npm run start` - Build your code & start your bot
 
 [discord.js]: https://discord.js.org
 [@discordjs/core]: https://discord.js.org/docs
