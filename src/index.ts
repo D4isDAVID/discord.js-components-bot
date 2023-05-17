@@ -1,4 +1,8 @@
-import { GatewayDispatchEvents, InteractionType } from '@discordjs/core';
+import {
+    ApplicationCommandType,
+    GatewayDispatchEvents,
+    InteractionType,
+} from '@discordjs/core';
 import { URL } from 'node:url';
 import loadComponents from './component-loader.js';
 import { client, gateway } from './env.js';
@@ -17,7 +21,10 @@ client.on(GatewayDispatchEvents.InteractionCreate, async (props) => {
         case InteractionType.ApplicationCommandAutocomplete:
             const command = commands.get(interaction.data.name);
             if (interaction.type === InteractionType.ApplicationCommand) {
-                if (command?.data.type === interaction.data.type)
+                if (
+                    (command?.data.type ?? ApplicationCommandType.ChatInput) ===
+                    interaction.data.type
+                )
                     await command
                         //@ts-expect-error
                         ?.execute(props)
