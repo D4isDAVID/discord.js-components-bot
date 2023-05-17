@@ -41,4 +41,4 @@ export default {
                 break;
         }
     },
-} as StringSelect;
+} satisfies StringSelect;

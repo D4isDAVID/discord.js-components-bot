@@ -19,10 +19,10 @@ import {
     APIUserSelectComponent,
     ApplicationCommandType,
     ComponentType,
-    GatewayDispatchEvents,
     MappedEvents,
     RESTPostAPIChatInputApplicationCommandsJSONBody,
     RESTPostAPIContextMenuApplicationCommandsJSONBody,
+    WithIntrinsicProps,
 } from '@discordjs/core';
 import { RestEvents } from '@discordjs/rest';
 import { ManagerShardEventsMap } from '@discordjs/ws';
@@ -77,13 +77,7 @@ type InteractionData<T extends APIInteraction> =
         ? APIModalInteractionResponseCallbackData
         : never;
 
-type InteractionExecuteArgs<T extends APIInteraction> =
-    EventExecuteArgs<GatewayDispatchEvents.InteractionCreate> &
-        [
-            {
-                data: T;
-            }
-        ];
+type InteractionExecuteArgs<T extends APIInteraction> = [WithIntrinsicProps<T>];
 
 interface IInteraction<T extends APIInteraction> {
     readonly data: InteractionData<T>;
@@ -102,15 +96,13 @@ type RestEvent<T extends keyof RestEvents> = IEvent<T>;
 type WebSocketEvent<T extends keyof ManagerShardEventsMap> = IEvent<T>;
 type GatewayEvent<T extends keyof MappedEvents> = IEvent<T>;
 
-type ApplicationCommand = IInteraction<APIApplicationCommandInteraction>;
 type ChatInputCommand = IInteraction<APIChatInputApplicationCommandInteraction>;
-type ContextMenuCommand = IInteraction<APIContextMenuInteraction>;
 type UserCommand = IInteraction<APIUserApplicationCommandInteraction>;
 type MessageCommand = IInteraction<APIMessageApplicationCommandInteraction>;
+type ContextMenuCommand = UserCommand | MessageCommand;
+type ApplicationCommand = ChatInputCommand | ContextMenuCommand;
 
-type MessageComponent = IInteraction<APIMessageComponentInteraction>;
 type Button = IInteraction<APIMessageComponentButtonInteraction>;
-type SelectMenu = IInteraction<APIMessageComponentSelectMenuInteraction>;
 type StringSelect = IInteraction<
     SelectMenuInteractionWithType<ComponentType.StringSelect>
 >;
@@ -126,13 +118,26 @@ type MentionableSelect = IInteraction<
 type ChannelSelect = IInteraction<
     SelectMenuInteractionWithType<ComponentType.ChannelSelect>
 >;
+type SelectMenu =
+    | StringSelect
+    | UserSelect
+    | RoleSelect
+    | MentionableSelect
+    | ChannelSelect;
+type MessageComponent = Button | SelectMenu;
 
 type Modal = IInteraction<APIModalSubmitInteraction>;
 
 interface IComponent {
-    readonly restEvents?: RestEvent<keyof RestEvents>[];
-    readonly wsEvents?: WebSocketEvent<keyof ManagerShardEventsMap>[];
-    readonly events?: GatewayEvent<keyof MappedEvents>[];
+    readonly restEvents?: {
+        [K in keyof RestEvents]: RestEvent<K>;
+    }[keyof RestEvents][];
+    readonly wsEvents?: {
+        [K in keyof ManagerShardEventsMap]: WebSocketEvent<K>;
+    }[keyof ManagerShardEventsMap][];
+    readonly events?: {
+        [K in keyof MappedEvents]: GatewayEvent<K>;
+    }[keyof MappedEvents][];
     readonly commands?: ApplicationCommand[];
     readonly messageComponents?: MessageComponent[];
     readonly modals?: Modal[];
@@ -151,19 +156,19 @@ export {
     RestEvent,
     WebSocketEvent,
     GatewayEvent,
-    ApplicationCommand,
     ChatInputCommand,
-    ContextMenuCommand,
     UserCommand,
     MessageCommand,
-    MessageComponent,
+    ContextMenuCommand,
+    ApplicationCommand,
     Button,
-    SelectMenu,
     StringSelect,
     UserSelect,
     RoleSelect,
     MentionableSelect,
     ChannelSelect,
+    SelectMenu,
+    MessageComponent,
     Modal,
     IComponent,
 };

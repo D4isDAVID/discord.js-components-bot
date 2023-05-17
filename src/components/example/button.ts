@@ -16,4 +16,4 @@ export default {
             modal.data
         );
     },
-} as Button;
+} satisfies Button;

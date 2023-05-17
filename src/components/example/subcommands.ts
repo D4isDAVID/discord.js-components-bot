@@ -17,7 +17,7 @@ const exampleSubcommand = {
             flags: MessageFlags.Ephemeral,
         });
     },
-} as Subcommand;
+} satisfies Subcommand;
 
 export default generateSubcommandsCommand(
     {

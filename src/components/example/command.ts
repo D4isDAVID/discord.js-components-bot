@@ -18,4 +18,4 @@ export default {
             flags: MessageFlags.Ephemeral,
         });
     },
-} as ChatInputCommand;
+} satisfies ChatInputCommand;

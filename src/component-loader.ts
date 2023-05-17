@@ -41,17 +41,20 @@ const loadComponents = async (componentsUrl: URL, client?: Client) => {
         if (client) {
             restEvents?.map((event) => {
                 client.rest[event.type](event.name, (...args) =>
+                    //@ts-expect-error
                     event.execute(...args).catch(console.error)
                 );
             });
             wsEvents?.map((event) => {
                 (client.gateway as WebSocketManager)[event.type](
                     event.name,
+                    //@ts-expect-error
                     (...args) => event.execute(...args).catch(console.error)
                 );
             });
             events?.map((event) => {
                 client[event.type](event.name, (...props) =>
+                    //@ts-expect-error
                     event.execute(...props).catch(console.error)
                 );
             });

@@ -9,4 +9,4 @@ export default {
     commands: [command, subcommands],
     messageComponents: [button, selectMenu],
     modals: [modal],
-} as IComponent;
+} satisfies IComponent;

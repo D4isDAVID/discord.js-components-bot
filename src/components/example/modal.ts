@@ -28,4 +28,4 @@ export default {
             flags: MessageFlags.Ephemeral,
         });
     },
-} as Modal;
+} satisfies Modal;

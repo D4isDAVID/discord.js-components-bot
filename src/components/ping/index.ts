@@ -15,7 +15,7 @@ const heartbeatEvent = {
     async execute({ latency }) {
         ping = latency;
     },
-} as WebSocketEvent<WebSocketShardEvents.HeartbeatComplete>;
+} satisfies WebSocketEvent<WebSocketShardEvents.HeartbeatComplete>;
 
 const pingCommand = {
     data: {
@@ -46,9 +46,9 @@ const pingCommand = {
             }
         );
     },
-} as ChatInputCommand;
+} satisfies ChatInputCommand;
 
 export default {
     wsEvents: [heartbeatEvent],
     commands: [pingCommand],
-} as IComponent;
+} satisfies IComponent;

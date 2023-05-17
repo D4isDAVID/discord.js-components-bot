@@ -14,35 +14,33 @@ client.on(GatewayDispatchEvents.InteractionCreate, async (props) => {
 
     switch (interaction.type) {
         case InteractionType.ApplicationCommand:
-            const command = commands.get(interaction.data.name);
-            await command
-                ?.execute({ ...props, data: interaction })
-                .catch(console.error);
-            break;
         case InteractionType.ApplicationCommandAutocomplete:
-            const autocompleteCommand = commands.get(interaction.data.name);
-            if (!autocompleteCommand?.autocomplete) break;
-            await autocompleteCommand
-                ?.autocomplete({
-                    ...props,
-                    data: interaction,
-                })
-                .catch(console.error);
+            const command = commands.get(interaction.data.name);
+            if (interaction.type === InteractionType.ApplicationCommand) {
+                if (command?.data.type === interaction.data.type)
+                    await command
+                        //@ts-expect-error
+                        ?.execute(props)
+                        .catch(console.error);
+            } else if (command?.autocomplete)
+                await command
+                    //@ts-expect-error
+                    ?.autocomplete(props)
+                    .catch(console.error);
             break;
         case InteractionType.MessageComponent:
             const component = messageComponents.get(interaction.data.custom_id);
             if (component?.data.type === interaction.data.component_type)
                 await component
-                    ?.execute({
-                        ...props,
-                        data: interaction,
-                    })
+                    //@ts-expect-error
+                    ?.execute(props)
                     .catch(console.error);
             break;
         case InteractionType.ModalSubmit:
             const modal = modals.get(interaction.data.custom_id);
             await modal
-                ?.execute({ ...props, data: interaction })
+                //@ts-expect-error
+                ?.execute(props)
                 .catch(console.error);
             break;
         default:
