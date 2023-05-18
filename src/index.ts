@@ -5,12 +5,17 @@ import {
 } from '@discordjs/core';
 import { URL } from 'node:url';
 import loadComponents from './component-loader.js';
-import { client, gateway } from './env.js';
+import { client, exitOnInteractionError, gateway } from './env.js';
 
 const { commands, messageComponents, modals } = await loadComponents(
     new URL('./components', import.meta.url),
     client
 );
+
+const throwOrLogInteractionError = (err: unknown) => {
+    if (exitOnInteractionError) throw err;
+    else console.error(err);
+};
 
 // Interaction handler
 client.on(GatewayDispatchEvents.InteractionCreate, async (props) => {
@@ -28,12 +33,12 @@ client.on(GatewayDispatchEvents.InteractionCreate, async (props) => {
                     await command
                         //@ts-expect-error
                         ?.execute(props)
-                        .catch(console.error);
+                        .catch(throwOrLogInteractionError);
             } else if (command?.autocomplete)
                 await command
                     //@ts-expect-error
                     ?.autocomplete(props)
-                    .catch(console.error);
+                    .catch(throwOrLogInteractionError);
             break;
         case InteractionType.MessageComponent:
             const component = messageComponents.get(interaction.data.custom_id);
@@ -41,14 +46,12 @@ client.on(GatewayDispatchEvents.InteractionCreate, async (props) => {
                 await component
                     //@ts-expect-error
                     ?.execute(props)
-                    .catch(console.error);
+                    .catch(throwOrLogInteractionError);
             break;
         case InteractionType.ModalSubmit:
             const modal = modals.get(interaction.data.custom_id);
-            await modal
-                //@ts-expect-error
-                ?.execute(props)
-                .catch(console.error);
+            //@ts-expect-error
+            await modal?.execute(props).catch(throwOrLogInteractionError);
             break;
         default:
             break;
