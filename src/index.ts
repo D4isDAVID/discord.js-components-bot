@@ -4,8 +4,8 @@ import {
     InteractionType,
 } from '@discordjs/core';
 import { URL } from 'node:url';
-import loadComponents from './component-loader.js';
-import { client, exitOnInteractionError, gateway } from './env.js';
+import loadComponents from './components/loader.js';
+import { client, exitOnInteractionError, gateway } from './utils/env.js';
 
 const { commands, messageComponents, modals } = await loadComponents(
     new URL('./components', import.meta.url),

@@ -1,4 +1,4 @@
-import { IComponent } from '../../component-data.js';
+import { IComponent } from '../data.js';
 import button from './button.js';
 import chatInputCommand from './chat-input-command.js';
 import messageCommand from './message-command.js';

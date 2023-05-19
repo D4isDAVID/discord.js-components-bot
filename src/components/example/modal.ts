@@ -1,5 +1,5 @@
 import { ComponentType, MessageFlags, TextInputStyle } from '@discordjs/core';
-import { Modal } from '../../component-data.js';
+import { Modal } from '../data.js';
 
 export default {
     data: {

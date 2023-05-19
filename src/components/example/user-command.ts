@@ -1,5 +1,5 @@
 import { ApplicationCommandType, MessageFlags } from '@discordjs/core';
-import { UserCommand } from '../../component-data.js';
+import { UserCommand } from '../data.js';
 
 export default {
     data: {

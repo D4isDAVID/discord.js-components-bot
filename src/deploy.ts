@@ -1,7 +1,7 @@
 import { stdout } from 'node:process';
 import { URL } from 'node:url';
-import loadComponents from './component-loader.js';
-import { api } from './env.js';
+import loadComponents from './components/loader.js';
+import { api } from './utils/env.js';
 
 const interactions = await loadComponents(
     new URL('./components', import.meta.url)

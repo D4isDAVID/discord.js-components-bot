@@ -6,7 +6,10 @@ import {
     APIChatInputApplicationCommandInteraction,
     RESTPostAPIChatInputApplicationCommandsJSONBody,
 } from '@discordjs/core';
-import { ChatInputCommand, InteractionExecuteArgs } from './component-data.js';
+import {
+    ChatInputCommand,
+    InteractionExecuteArgs,
+} from '../components/data.js';
 
 interface ISubcommandOrGroup<
     T extends

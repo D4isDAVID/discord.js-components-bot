@@ -6,13 +6,13 @@ import { stdout } from 'node:process';
 import { clearLine, moveCursor } from 'node:readline';
 import { URL } from 'node:url';
 import { inspect } from 'node:util';
+import { exitOnComponentError, exitOnEventError } from '../utils/env.js';
 import {
     ApplicationCommand,
     IComponent,
     MessageComponent,
     Modal,
-} from './component-data.js';
-import { exitOnComponentError, exitOnEventError } from './env.js';
+} from './data.js';
 
 const throwOrLogEventError = (err: unknown) => {
     if (exitOnEventError) throw err;

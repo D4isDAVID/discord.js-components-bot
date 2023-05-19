@@ -1,5 +1,5 @@
 import { ComponentType, MessageFlags } from '@discordjs/core';
-import { StringSelect } from '../../component-data.js';
+import { StringSelect } from '../data.js';
 import button from './button.js';
 
 export default {

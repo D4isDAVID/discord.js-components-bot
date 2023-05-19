@@ -1,5 +1,5 @@
 import { ButtonStyle, ComponentType } from '@discordjs/core';
-import { Button } from '../../component-data.js';
+import { Button } from '../data.js';
 import modal from './modal.js';
 
 export default {
