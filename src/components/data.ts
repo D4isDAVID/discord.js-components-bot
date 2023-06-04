@@ -96,6 +96,17 @@ type RestEvent<T extends keyof RestEvents> = IEvent<T>;
 type WebSocketEvent<T extends keyof ManagerShardEventsMap> = IEvent<T>;
 type GatewayEvent<T extends keyof MappedEvents> = IEvent<T>;
 
+type RestEventsMap = {
+    [T in keyof RestEvents]: RestEvent<T>;
+};
+type WebSocketEventsMap = {
+    [T in keyof ManagerShardEventsMap]: WebSocketEvent<T>;
+};
+type GatewayEventsMap = {
+    [T in keyof MappedEvents]: GatewayEvent<T>;
+};
+type EventsMap = RestEventsMap & WebSocketEventsMap & GatewayEventsMap;
+
 type ChatInputCommand = IInteraction<APIChatInputApplicationCommandInteraction>;
 type UserCommand = IInteraction<APIUserApplicationCommandInteraction>;
 type MessageCommand = IInteraction<APIMessageApplicationCommandInteraction>;
@@ -129,15 +140,9 @@ type MessageComponent = Button | SelectMenu;
 type Modal = IInteraction<APIModalSubmitInteraction>;
 
 interface IComponent {
-    readonly restEvents?: {
-        [K in keyof RestEvents]: RestEvent<K>;
-    }[keyof RestEvents][];
-    readonly wsEvents?: {
-        [K in keyof ManagerShardEventsMap]: WebSocketEvent<K>;
-    }[keyof ManagerShardEventsMap][];
-    readonly events?: {
-        [K in keyof MappedEvents]: GatewayEvent<K>;
-    }[keyof MappedEvents][];
+    readonly restEvents?: RestEventsMap[keyof RestEvents][];
+    readonly wsEvents?: WebSocketEventsMap[keyof ManagerShardEventsMap][];
+    readonly gatewayEvents?: GatewayEventsMap[keyof MappedEvents][];
     readonly commands?: ApplicationCommand[];
     readonly messageComponents?: MessageComponent[];
     readonly modals?: Modal[];
@@ -156,6 +161,10 @@ export {
     RestEvent,
     WebSocketEvent,
     GatewayEvent,
+    RestEventsMap,
+    WebSocketEventsMap,
+    GatewayEventsMap,
+    EventsMap,
     ChatInputCommand,
     UserCommand,
     MessageCommand,
