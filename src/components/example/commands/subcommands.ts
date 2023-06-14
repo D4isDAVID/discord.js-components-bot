@@ -3,7 +3,7 @@ import {
     Subcommand,
     generateSubcommandGroup,
     generateSubcommandsCommand,
-} from '../../utils/subcommands.js';
+} from '../../../utils/subcommands.js';
 
 const exampleSubcommand = {
     data: {

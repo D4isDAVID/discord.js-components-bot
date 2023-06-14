@@ -1,6 +1,6 @@
 import { ComponentType, MessageFlags } from '@discordjs/core';
-import { ChatInputCommand } from '../data.js';
-import stringSelect, { options } from './string-select.js';
+import { ChatInputCommand } from '../../data.js';
+import stringSelect, { options } from '../message-components/string-select.js';
 
 export default {
     data: {

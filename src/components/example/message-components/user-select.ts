@@ -1,19 +1,19 @@
 import { ComponentType, MessageFlags } from '@discordjs/core';
-import { RoleSelect } from '../data.js';
+import { UserSelect } from '../../data.js';
 
 export default {
     data: {
-        type: ComponentType.RoleSelect,
-        custom_id: 'role_select_example',
+        type: ComponentType.UserSelect,
+        custom_id: 'user_select_example',
         max_values: 1,
     },
     async execute({ api, data: interaction }) {
-        const role =
-            interaction.data.resolved.roles[interaction.data.values[0]!]!;
+        const user =
+            interaction.data.resolved.users[interaction.data.values[0]!]!;
 
         await api.interactions.reply(interaction.id, interaction.token, {
-            content: `The role is: <@&${role.id}>`,
+            content: `The user is: <@${user.id}>`,
             flags: MessageFlags.Ephemeral,
         });
     },
-} satisfies RoleSelect;
+} satisfies UserSelect;

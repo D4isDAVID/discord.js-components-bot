@@ -3,7 +3,7 @@ import {
     ComponentType,
     MessageFlags,
 } from '@discordjs/core';
-import { StringSelect } from '../data.js';
+import { StringSelect } from '../../data.js';
 import button from './button.js';
 import channelSelect from './channel-select.js';
 import mentionableSelect from './mentionable-select.js';

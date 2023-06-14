@@ -1,15 +1,15 @@
 import { IComponent } from '../data.js';
-import button from './button.js';
-import channelSelect from './channel-select.js';
-import chatInputCommand from './chat-input-command.js';
-import mentionableSelect from './mentionable-select.js';
-import messageCommand from './message-command.js';
+import chatInputCommand from './commands/chat-input-command.js';
+import messageCommand from './commands/message-command.js';
+import subcommands from './commands/subcommands.js';
+import userCommand from './commands/user-command.js';
+import button from './message-components/button.js';
+import channelSelect from './message-components/channel-select.js';
+import mentionableSelect from './message-components/mentionable-select.js';
+import roleSelect from './message-components/role-select.js';
+import stringSelect from './message-components/string-select.js';
+import userSelect from './message-components/user-select.js';
 import modal from './modal.js';
-import roleSelect from './role-select.js';
-import stringSelect from './string-select.js';
-import subcommands from './subcommands.js';
-import userCommand from './user-command.js';
-import userSelect from './user-select.js';
 
 export default {
     commands: [chatInputCommand, subcommands, userCommand, messageCommand],
