@@ -10,14 +10,10 @@ export default {
         const user =
             interaction.data.resolved.users[interaction.data.target_id];
 
-        const content = user
-            ? `The user is: ${user.username}${
-                  user.discriminator !== '0' && '#' + user.discriminator
-              }`
-            : "Somehow couldn't find the user.";
-
         await api.interactions.reply(interaction.id, interaction.token, {
-            content,
+            content: `The user is: ${user!.username}${
+                user!.discriminator !== '0' && '#' + user!.discriminator
+            }`,
             flags: MessageFlags.Ephemeral,
         });
     },

@@ -10,12 +10,8 @@ export default {
         const message =
             interaction.data.resolved.messages[interaction.data.target_id];
 
-        const content = message
-            ? `The message says: ${message?.content}`
-            : "Somehow couldn't find the message.";
-
         await api.interactions.reply(interaction.id, interaction.token, {
-            content,
+            content: `The message says: ${message!.content}`,
             flags: MessageFlags.Ephemeral,
         });
     },
