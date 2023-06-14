@@ -54,8 +54,10 @@ type ContextMenuInteractionType<T extends APIContextMenuInteraction> =
         : never;
 
 interface MessageComponentDataMap {
+    [ComponentType.ActionRow]: never;
     [ComponentType.Button]: APIButtonComponentWithCustomId;
     [ComponentType.StringSelect]: APIStringSelectComponent;
+    [ComponentType.TextInput]: never;
     [ComponentType.UserSelect]: APIUserSelectComponent;
     [ComponentType.RoleSelect]: APIRoleSelectComponent;
     [ComponentType.MentionableSelect]: APIMentionableSelectComponent;

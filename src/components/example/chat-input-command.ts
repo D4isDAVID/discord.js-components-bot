@@ -1,6 +1,6 @@
 import { ComponentType, MessageFlags } from '@discordjs/core';
 import { ChatInputCommand } from '../data.js';
-import selectMenu from './select-menu.js';
+import stringSelect, { options } from './string-select.js';
 
 export default {
     data: {
@@ -8,11 +8,18 @@ export default {
         description: 'Example command',
     },
     async execute({ api, data: interaction }) {
+        const { data } = stringSelect;
+
+        if (!interaction.guild_id)
+            data.options = data.options.filter(
+                (option) => !options[option.value]?.guildBased
+            );
+
         await api.interactions.reply(interaction.id, interaction.token, {
             components: [
                 {
                     type: ComponentType.ActionRow,
-                    components: [selectMenu.data],
+                    components: [data],
                 },
             ],
             flags: MessageFlags.Ephemeral,
