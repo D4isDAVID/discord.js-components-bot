@@ -7,12 +7,12 @@ export default {
         type: ApplicationCommandType.User,
     },
     async execute({ api, data: interaction }) {
-        const user =
-            interaction.data.resolved.users[interaction.data.target_id];
+        const { username, discriminator } =
+            interaction.data.resolved.users[interaction.data.target_id]!;
 
         await api.interactions.reply(interaction.id, interaction.token, {
-            content: `The user is: ${user!.username}${
-                user!.discriminator !== '0' && '#' + user!.discriminator
+            content: `The user is: ${username}${
+                discriminator !== '0' ? `#${discriminator}` : ''
             }`,
             flags: MessageFlags.Ephemeral,
         });

@@ -7,11 +7,11 @@ export default {
         type: ApplicationCommandType.Message,
     },
     async execute({ api, data: interaction }) {
-        const message =
-            interaction.data.resolved.messages[interaction.data.target_id];
+        const { content } =
+            interaction.data.resolved.messages[interaction.data.target_id]!;
 
         await api.interactions.reply(interaction.id, interaction.token, {
-            content: `The message says: ${message!.content}`,
+            content: `The message says: ${content}`,
             flags: MessageFlags.Ephemeral,
         });
     },
