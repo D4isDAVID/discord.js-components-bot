@@ -61,8 +61,11 @@ for await (const folder of (
         commands: componentCommands,
         messageComponents,
         modals,
-    } = (await import(`${COMPONENTS_URL.pathname}/${folder.name}/index.js`))
-        .default as IComponent;
+    } = (
+        await import(
+            new URL(`./${folder.name}/index.js`, COMPONENTS_URL).pathname
+        )
+    ).default as IComponent;
 
     restEvents && registerEvents(rest, restEvents);
     wsEvents && registerEvents(gateway, wsEvents);
