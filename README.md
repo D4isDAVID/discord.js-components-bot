@@ -25,7 +25,7 @@ related events, commands and other interactions in their own folder
 
 The template adds subcommand utilities, allowing you to create
 commands with subcommands and subcommand groups with ease
-([see example](./src/components/example/subcommands.ts)).
+([see example](./src/components/example/commands/subcommands.ts)).
 
 ## Configuration
 
