@@ -1,4 +1,4 @@
-import { API, Client } from '@discordjs/core';
+import { Client } from '@discordjs/core';
 import { REST } from '@discordjs/rest';
 import { WebSocketManager } from '@discordjs/ws';
 import { env } from 'node:process';
@@ -17,5 +17,5 @@ export const gateway = new WebSocketManager({
     shardCount,
 });
 
-export const api = new API(rest);
 export const client = new Client({ rest, gateway });
+export const api = client.api;

@@ -1,9 +1,9 @@
 import { ApplicationCommandOptionType, MessageFlags } from '@discordjs/core';
 import {
     Subcommand,
-    generateSubcommandGroup,
-    generateSubcommandsCommand,
-} from '../../../utils/subcommands.js';
+    createSubcommandGroup,
+    createSubcommandsCommand,
+} from '../../subcommands.js';
 
 const exampleSubcommand = {
     data: {
@@ -19,13 +19,13 @@ const exampleSubcommand = {
     },
 } satisfies Subcommand;
 
-export default generateSubcommandsCommand(
+export default createSubcommandsCommand(
     {
         name: 'subcommands',
         description: 'An example command with subcommands',
     },
     [
-        generateSubcommandGroup(
+        createSubcommandGroup(
             {
                 name: 'group',
                 description: 'An example subcommand group',

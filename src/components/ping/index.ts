@@ -1,6 +1,6 @@
 import { WebSocketShardEvents } from '@discordjs/ws';
-import { gateway } from '../../utils/env.js';
-import { ChatInputCommand, IComponent, WebSocketEvent } from '../data.js';
+import { gateway } from '../../env.js';
+import { ChatInputCommand, Component, WebSocketEvent } from '../data.js';
 
 let ping = -1;
 const pingMessage = (p: string) => `🏓 Pong! \`${p}\``;
@@ -19,23 +19,23 @@ const pingCommand = {
         description: 'Ping command',
     },
     async execute({ api, data: interaction }) {
-        let method: 'reply' | 'editReply' = 'reply';
+        let replied = false;
 
         if (ping < 0) {
-            const p = new Promise<void>((resolve) => {
-                gateway.once(WebSocketShardEvents.HeartbeatComplete, () => {
-                    resolve();
-                });
+            const heartbeatPromise = new Promise<unknown>((resolve) => {
+                gateway.once(WebSocketShardEvents.HeartbeatComplete, resolve);
             });
-            method = 'editReply';
+
             await api.interactions.reply(interaction.id, interaction.token, {
                 content: pingMessage('fetching...'),
             });
-            await p;
+
+            await heartbeatPromise;
+            replied = true;
         }
 
-        await api.interactions[method](
-            method === 'reply' ? interaction.id : interaction.application_id,
+        await api.interactions[replied ? 'editReply' : 'reply'](
+            replied ? interaction.application_id : interaction.id,
             interaction.token,
             {
                 content: pingMessage(`${ping}ms`),
@@ -47,4 +47,4 @@ const pingCommand = {
 export default {
     wsEvents: [heartbeatEvent],
     commands: [pingCommand],
-} satisfies IComponent;
+} satisfies Component;

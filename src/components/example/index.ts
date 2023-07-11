@@ -1,4 +1,4 @@
-import { IComponent } from '../data.js';
+import { Component } from '../data.js';
 import chatInputCommand from './commands/chat-input-command.js';
 import messageCommand from './commands/message-command.js';
 import subcommands from './commands/subcommands.js';
@@ -22,4 +22,4 @@ export default {
         channelSelect,
     ],
     modals: [modal],
-} satisfies IComponent;
+} satisfies Component;

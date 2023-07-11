@@ -1,14 +1,13 @@
 import { stdout } from 'node:process';
-import { commands } from './components/loader.js';
-import { api } from './utils/env.js';
+import loadComponents, { commands } from './components/loader.js';
+import { api } from './env.js';
+
+await loadComponents();
 
 stdout.write('Fetching application info... ');
-const application = await api.oauth2.getCurrentBotApplicationInformation();
+const { id } = await api.oauth2.getCurrentBotApplicationInformation();
 console.log('Done!');
 
 stdout.write('Deploying commands... ');
-await api.applicationCommands.bulkOverwriteGlobalCommands(
-    application.id,
-    commands
-);
+await api.applicationCommands.bulkOverwriteGlobalCommands(id, commands);
 console.log('Done!');

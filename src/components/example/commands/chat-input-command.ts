@@ -8,10 +8,10 @@ export default {
         description: 'Example command',
     },
     async execute({ api, data: interaction }) {
-        const { data } = stringSelect;
+        const { data: stringSelectData } = stringSelect;
 
         if (!interaction.guild_id)
-            data.options = data.options.filter(
+            stringSelectData.options = stringSelectData.options.filter(
                 (option) => !options[option.value]?.guildBased
             );
 
@@ -19,7 +19,7 @@ export default {
             components: [
                 {
                     type: ComponentType.ActionRow,
-                    components: [data],
+                    components: [stringSelectData],
                 },
             ],
             flags: MessageFlags.Ephemeral,

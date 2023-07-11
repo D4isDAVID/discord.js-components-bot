@@ -141,7 +141,7 @@ type MessageComponent = Button | SelectMenu;
 
 type Modal = IInteraction<APIModalSubmitInteraction>;
 
-interface IComponent {
+interface Component {
     readonly restEvents?: RestEventsMap[keyof RestEvents][];
     readonly wsEvents?: WebSocketEventsMap[keyof ManagerShardEventsMap][];
     readonly gatewayEvents?: GatewayEventsMap[keyof MappedEvents][];
@@ -155,6 +155,7 @@ export {
     Button,
     ChannelSelect,
     ChatInputCommand,
+    Component,
     ContextMenuCommand,
     ContextMenuInteractionType,
     EventExecuteArgs,
@@ -162,7 +163,6 @@ export {
     EventsMap,
     GatewayEvent,
     GatewayEventsMap,
-    IComponent,
     IEvent,
     IInteraction,
     InteractionData,

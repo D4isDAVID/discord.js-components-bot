@@ -6,10 +6,7 @@ import {
     APIChatInputApplicationCommandInteraction,
     RESTPostAPIChatInputApplicationCommandsJSONBody,
 } from '@discordjs/core';
-import {
-    ChatInputCommand,
-    InteractionExecuteArgs,
-} from '../components/data.js';
+import { ChatInputCommand, InteractionExecuteArgs } from './data.js';
 
 interface ISubcommandOrGroup<
     T extends
@@ -29,7 +26,7 @@ type Subcommand = ISubcommandOrGroup<APIApplicationCommandSubcommandOption>;
 type SubcommandGroup =
     ISubcommandOrGroup<APIApplicationCommandSubcommandGroupOption>;
 
-const generateSubcommandGroup = (
+const createSubcommandGroup = (
     data: APIApplicationCommandSubcommandGroupOption,
     subcommandsArray: Subcommand[]
 ) => {
@@ -61,7 +58,7 @@ const generateSubcommandGroup = (
     } as SubcommandGroup;
 };
 
-const generateSubcommandsCommand = (
+const createSubcommandsCommand = (
     data: RESTPostAPIChatInputApplicationCommandsJSONBody,
     subcommandsArray: (Subcommand | SubcommandGroup)[]
 ) => {
@@ -96,6 +93,6 @@ const generateSubcommandsCommand = (
 export {
     Subcommand,
     SubcommandGroup,
-    generateSubcommandGroup,
-    generateSubcommandsCommand,
+    createSubcommandGroup,
+    createSubcommandsCommand,
 };

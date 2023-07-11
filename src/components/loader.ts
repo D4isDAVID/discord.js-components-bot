@@ -1,37 +1,30 @@
 import { Collection } from '@discordjs/collection';
-import {
-    GatewayDispatchEvents,
-    RESTPutAPIApplicationCommandsJSONBody,
-} from '@discordjs/core';
+import { RESTPutAPIApplicationCommandsJSONBody } from '@discordjs/core';
 import EventEmitter from 'node:events';
 import { readdir } from 'node:fs/promises';
 import { stdout } from 'node:process';
 import { clearLine, moveCursor } from 'node:readline';
 import { URL } from 'node:url';
 import { inspect } from 'node:util';
-import { client, exitOnEventError, gateway, rest } from '../utils/env.js';
+import { client, exitOnEventError, gateway, rest } from '../env.js';
 import {
     ApplicationCommand,
+    Component,
     EventName,
     EventsMap,
-    GatewayEvent,
-    IComponent,
     MessageComponent,
     Modal,
 } from './data.js';
-import interactionHandler from './interaction-handler.js';
 
 const COMPONENTS_URL = new URL('./', import.meta.url);
 
-export const interactions = {
+const interactions = {
     commands: new Collection<string, ApplicationCommand>(),
     messageComponents: new Collection<string, MessageComponent>(),
     modals: new Collection<string, Modal>(),
 };
 
-export const commands: RESTPutAPIApplicationCommandsJSONBody = [];
-
-stdout.write('Loading components... ');
+const commands: RESTPutAPIApplicationCommandsJSONBody = [];
 
 const registerEvent = (emitter: EventEmitter, event: EventsMap[EventName]) => {
     emitter[event.type](event.name, (...args) =>
@@ -49,24 +42,14 @@ const registerEvents = (
     for (const event of events) registerEvent(emitter, event);
 };
 
-for await (const folder of (
-    await readdir(COMPONENTS_URL, { withFileTypes: true })
-).filter((f) => f.isDirectory())) {
-    stdout.write(folder.name);
-
-    const {
-        restEvents,
-        wsEvents,
-        gatewayEvents,
-        commands: componentCommands,
-        messageComponents,
-        modals,
-    } = (
-        await import(
-            new URL(`./${folder.name}/index.js`, COMPONENTS_URL).pathname
-        )
-    ).default as IComponent;
-
+const loadComponent = ({
+    restEvents,
+    wsEvents,
+    gatewayEvents,
+    commands: componentCommands,
+    messageComponents,
+    modals,
+}: Component) => {
     restEvents && registerEvents(rest, restEvents);
     wsEvents && registerEvents(gateway, wsEvents);
     gatewayEvents && registerEvents(client, gatewayEvents);
@@ -84,19 +67,29 @@ for await (const folder of (
     modals?.map((modal) => {
         interactions.modals.set(modal.data.custom_id, modal);
     });
+};
 
-    moveCursor(stdout, -folder.name.length, 0);
-    clearLine(stdout, 1);
-}
+const loadComponents = async () => {
+    stdout.write('Loading components... ');
 
-registerEvent(client, interactionHandler);
-registerEvent(client, {
-    name: GatewayDispatchEvents.Ready,
-    type: 'once',
-    async execute({ data }) {
-        const { username, discriminator } = data.user;
-        console.log(`Ready as ${username}#${discriminator}!`);
-    },
-} satisfies GatewayEvent<GatewayDispatchEvents.Ready>);
+    for await (const folder of (
+        await readdir(COMPONENTS_URL, { withFileTypes: true })
+    ).filter((f) => f.isDirectory())) {
+        stdout.write(folder.name);
 
-console.log('Done!');
+        const component = (
+            await import(
+                new URL(`./${folder.name}/index.js`, COMPONENTS_URL).pathname
+            )
+        ).default as Component;
+        loadComponent(component);
+
+        moveCursor(stdout, -folder.name.length, 0);
+        clearLine(stdout, 1);
+    }
+
+    console.log('Done!');
+};
+
+export { commands, interactions };
+export default loadComponents;
