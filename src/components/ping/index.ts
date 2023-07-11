@@ -39,7 +39,7 @@ const pingCommand = {
             interaction.token,
             {
                 content: pingMessage(`${ping}ms`),
-            }
+            },
         );
     },
 } satisfies ChatInputCommand;

@@ -11,7 +11,7 @@ import { ChatInputCommand, InteractionExecuteArgs } from './data.js';
 interface ISubcommandOrGroup<
     T extends
         | APIApplicationCommandSubcommandOption
-        | APIApplicationCommandSubcommandGroupOption
+        | APIApplicationCommandSubcommandGroupOption,
 > {
     readonly data: T;
     readonly execute: (
@@ -28,7 +28,7 @@ type SubcommandGroup =
 
 const createSubcommandGroup = (
     data: APIApplicationCommandSubcommandGroupOption,
-    subcommandsArray: Subcommand[]
+    subcommandsArray: Subcommand[],
 ) => {
     const subcommands = new Collection<string, Subcommand>();
     data.options = [];
@@ -60,7 +60,7 @@ const createSubcommandGroup = (
 
 const createSubcommandsCommand = (
     data: RESTPostAPIChatInputApplicationCommandsJSONBody,
-    subcommandsArray: (Subcommand | SubcommandGroup)[]
+    subcommandsArray: (Subcommand | SubcommandGroup)[],
 ) => {
     const subcommands = new Collection<string, Subcommand | SubcommandGroup>();
     data.options = [];
@@ -75,14 +75,14 @@ const createSubcommandsCommand = (
         execute(props) {
             const { data: interaction } = props;
             const subcommand = subcommands.get(
-                interaction.data.options![0]!.name
+                interaction.data.options![0]!.name,
             );
             return subcommand?.execute(props);
         },
         autocomplete(props) {
             const { data: interaction } = props;
             const subcommand = subcommands.get(
-                interaction.data.options![0]!.name
+                interaction.data.options![0]!.name,
             );
             if (!subcommand?.autocomplete) return;
             return subcommand?.autocomplete(props);

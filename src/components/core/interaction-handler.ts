@@ -16,12 +16,12 @@ export default {
             case InteractionType.ApplicationCommand:
             case InteractionType.ApplicationCommandAutocomplete:
                 const command = interactions.commands.get(
-                    interaction.data.name
+                    interaction.data.name,
                 );
 
                 if (!command)
                     throw new Error(
-                        `Command not defined for ${interaction.data.name}.`
+                        `Command not defined for ${interaction.data.name}.`,
                     );
 
                 if (
@@ -38,12 +38,12 @@ export default {
 
             case InteractionType.MessageComponent:
                 const component = interactions.messageComponents.get(
-                    interaction.data.custom_id
+                    interaction.data.custom_id,
                 );
 
                 if (!component)
                     throw new Error(
-                        `Message component not defined for ${interaction.data.custom_id}.`
+                        `Message component not defined for ${interaction.data.custom_id}.`,
                     );
 
                 if (component.data.type === interaction.data.component_type)
@@ -53,12 +53,12 @@ export default {
 
             case InteractionType.ModalSubmit:
                 const modal = interactions.modals.get(
-                    interaction.data.custom_id
+                    interaction.data.custom_id,
                 );
 
                 if (!modal)
                     throw new Error(
-                        `Modal not defined for ${interaction.data.custom_id}.`
+                        `Modal not defined for ${interaction.data.custom_id}.`,
                     );
 
                 //@ts-ignore

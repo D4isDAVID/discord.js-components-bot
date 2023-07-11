@@ -31,13 +31,13 @@ const registerEvent = (emitter: EventEmitter, event: EventsMap[EventName]) => {
         event.execute(...args).catch((err) => {
             if (exitOnEventError) throw err;
             console.error(inspect(err));
-        })
+        }),
     );
 };
 
 const registerEvents = (
     emitter: EventEmitter,
-    events: EventsMap[EventName][]
+    events: EventsMap[EventName][],
 ) => {
     for (const event of events) registerEvent(emitter, event);
 };
@@ -61,7 +61,7 @@ const loadComponent = ({
     messageComponents?.map((messageComponent) => {
         interactions.messageComponents.set(
             messageComponent.data.custom_id,
-            messageComponent
+            messageComponent,
         );
     });
     modals?.map((modal) => {

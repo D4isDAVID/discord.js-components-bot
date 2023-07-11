@@ -12,7 +12,7 @@ export default {
 
         if (!interaction.guild_id)
             stringSelectData.options = stringSelectData.options.filter(
-                (option) => !options[option.value]?.guildBased
+                (option) => !options[option.value]?.guildBased,
             );
 
         await api.interactions.reply(interaction.id, interaction.token, {

@@ -13,7 +13,7 @@ export default {
         await api.interactions.createModal(
             interaction.id,
             interaction.token,
-            modal.data
+            modal.data,
         );
     },
 } satisfies Button;

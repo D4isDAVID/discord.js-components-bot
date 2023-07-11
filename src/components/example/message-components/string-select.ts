@@ -58,7 +58,7 @@ export default {
                 label,
                 value,
                 description,
-            })
+            }),
         ),
         max_values: 1,
     },
@@ -66,7 +66,7 @@ export default {
         await api.interactions.updateMessage(
             interaction.id,
             interaction.token,
-            {}
+            {},
         );
 
         let component: APIMessageActionRowComponent | undefined =
@@ -84,7 +84,7 @@ export default {
                         },
                     ],
                     flags: MessageFlags.Ephemeral,
-                }
+                },
             );
     },
 } satisfies StringSelect;

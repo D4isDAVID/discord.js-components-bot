@@ -31,8 +31,8 @@ export default createSubcommandsCommand(
                 description: 'An example subcommand group',
                 type: ApplicationCommandOptionType.SubcommandGroup,
             },
-            [exampleSubcommand]
+            [exampleSubcommand],
         ),
         exampleSubcommand,
-    ]
+    ],
 );
