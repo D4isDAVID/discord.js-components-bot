@@ -23,5 +23,5 @@
 
     "lib": ["ESNext"]
   },
-  "include": ["src", "typings"]
+  "include": ["src"]
 }
