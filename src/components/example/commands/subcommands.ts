@@ -5,20 +5,6 @@ import {
     createSubcommandsCommand,
 } from '../../subcommands.js';
 
-const exampleSubcommand = {
-    data: {
-        name: 'subcommand',
-        description: 'An example subcommand',
-        type: ApplicationCommandOptionType.Subcommand,
-    },
-    async execute({ api, data: interaction }) {
-        api.interactions.reply(interaction.id, interaction.token, {
-            content: 'Example message',
-            flags: MessageFlags.Ephemeral,
-        });
-    },
-} satisfies Subcommand;
-
 export default createSubcommandsCommand(
     {
         data: {
@@ -35,8 +21,43 @@ export default createSubcommandsCommand(
                     type: ApplicationCommandOptionType.SubcommandGroup,
                 },
             },
-            [exampleSubcommand],
+            [
+                {
+                    data: {
+                        name: 'subcommand',
+                        description: 'An example subcommand',
+                        type: ApplicationCommandOptionType.Subcommand,
+                    },
+                    async execute({
+                        api,
+                        data: interaction,
+                        subcommandGroupData,
+                        subcommandData,
+                    }) {
+                        api.interactions.reply(
+                            interaction.id,
+                            interaction.token,
+                            {
+                                content: `You ran the \`${subcommandData.name}\` subcommand inside the \`${subcommandGroupData.name}\` group!`,
+                                flags: MessageFlags.Ephemeral,
+                            },
+                        );
+                    },
+                },
+            ],
         ),
-        exampleSubcommand,
+        {
+            data: {
+                name: 'subcommand',
+                description: 'An example subcommand',
+                type: ApplicationCommandOptionType.Subcommand,
+            },
+            async execute({ api, data: interaction, subcommandData }) {
+                api.interactions.reply(interaction.id, interaction.token, {
+                    content: `You ran the \`${subcommandData.name}\` subcommand!`,
+                    flags: MessageFlags.Ephemeral,
+                });
+            },
+        } satisfies Subcommand,
     ],
 );

@@ -4,32 +4,65 @@ import {
     APIApplicationCommandSubcommandGroupOption,
     APIApplicationCommandSubcommandOption,
     APIChatInputApplicationCommandInteraction,
+    APIInteraction,
+    ApplicationCommandOptionType,
 } from '@discordjs/core';
 import { ChatInputCommand, InteractionExecuteArgs } from './data.js';
+
+type SubcommandOrGroupExecuteArgs<
+    I extends APIInteraction,
+    T extends
+        | APIApplicationCommandSubcommandOption
+        | APIApplicationCommandSubcommandGroupOption,
+    G extends boolean = false,
+> = InteractionExecuteArgs<I> & {
+    subcommandData: T extends APIApplicationCommandSubcommandOption
+        ? APIApplicationCommandSubcommandOption
+        : never;
+    subcommandGroupData: T extends APIApplicationCommandSubcommandGroupOption
+        ? APIApplicationCommandSubcommandGroupOption
+        : G extends true
+        ? APIApplicationCommandSubcommandGroupOption
+        : never;
+};
 
 interface ISubcommandOrGroup<
     T extends
         | APIApplicationCommandSubcommandOption
         | APIApplicationCommandSubcommandGroupOption,
+    G extends T extends APIApplicationCommandSubcommandOption
+        ? boolean
+        : false = false,
 > {
     readonly data: T;
     readonly execute: (
-        ...props: InteractionExecuteArgs<APIChatInputApplicationCommandInteraction>
+        props: SubcommandOrGroupExecuteArgs<
+            APIChatInputApplicationCommandInteraction,
+            T,
+            G
+        >,
     ) => Promise<void>;
     readonly autocomplete?: (
-        ...props: InteractionExecuteArgs<APIApplicationCommandAutocompleteInteraction>
+        props: SubcommandOrGroupExecuteArgs<
+            APIApplicationCommandAutocompleteInteraction,
+            T,
+            G
+        >,
     ) => Promise<void>;
 }
 
-type Subcommand = ISubcommandOrGroup<APIApplicationCommandSubcommandOption>;
+type Subcommand<G extends boolean = false> = ISubcommandOrGroup<
+    APIApplicationCommandSubcommandOption,
+    G
+>;
 type SubcommandGroup =
     ISubcommandOrGroup<APIApplicationCommandSubcommandGroupOption>;
 
 const createSubcommandGroup = (
     group: Partial<SubcommandGroup> & Pick<SubcommandGroup, 'data'>,
-    subcommandsArray: Subcommand[],
+    subcommandsArray: Subcommand<true>[],
 ) => {
-    const subcommands = new Collection<string, Subcommand>();
+    const subcommands = new Collection<string, Subcommand<true>>();
     group.data.options = [];
 
     subcommandsArray.map((subcommand) => {
@@ -43,16 +76,22 @@ const createSubcommandGroup = (
             const { data: interaction } = props;
             const groupOption = interaction.data
                 .options![0] as unknown as APIApplicationCommandSubcommandGroupOption;
-            const subcommand = subcommands.get(groupOption.options![0]!.name);
+            const subcommandData = groupOption.options![0]!;
+            const subcommand = subcommands.get(subcommandData.name);
             await group.execute?.(props);
+            //@ts-ignore
+            props.subcommandData = subcommandData;
             await subcommand?.execute(props);
         },
         async autocomplete(props) {
             const { data: interaction } = props;
             const groupOption = interaction.data
                 .options![0] as unknown as APIApplicationCommandSubcommandGroupOption;
-            const subcommand = subcommands.get(groupOption.options![0]!.name);
+            const subcommandData = groupOption.options![0]!;
+            const subcommand = subcommands.get(subcommandData.name);
             await group.autocomplete?.(props);
+            //@ts-ignore
+            props.subcommandData = subcommandData;
             await subcommand?.autocomplete?.(props);
         },
     } satisfies SubcommandGroup;
@@ -74,18 +113,30 @@ const createSubcommandsCommand = (
         data: command.data,
         async execute(props) {
             const { data: interaction } = props;
-            const subcommand = subcommands.get(
-                interaction.data.options![0]!.name,
-            );
+            const subcommandData = interaction.data.options![0]!;
+            const subcommand = subcommands.get(subcommandData.name);
             await command.execute?.(props);
+            //@ts-ignore
+            props[
+                subcommandData.type === ApplicationCommandOptionType.Subcommand
+                    ? 'subcommandData'
+                    : 'subcommandGroupData'
+            ] = subcommandData;
+            //@ts-ignore
             await subcommand?.execute(props);
         },
         async autocomplete(props) {
             const { data: interaction } = props;
-            const subcommand = subcommands.get(
-                interaction.data.options![0]!.name,
-            );
+            const subcommandData = interaction.data.options![0]!;
+            const subcommand = subcommands.get(subcommandData.name);
             await command.autocomplete?.(props);
+            //@ts-ignore
+            props[
+                subcommandData.type === ApplicationCommandOptionType.Subcommand
+                    ? 'subcommandData'
+                    : 'subcommandGroupData'
+            ] = subcommandData;
+            //@ts-ignore
             await subcommand?.autocomplete?.(props);
         },
     } satisfies ChatInputCommand;

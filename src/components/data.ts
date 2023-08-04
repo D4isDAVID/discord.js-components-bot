@@ -79,14 +79,14 @@ type InteractionData<T extends APIInteraction> =
         ? APIModalInteractionResponseCallbackData
         : never;
 
-type InteractionExecuteArgs<T extends APIInteraction> = [WithIntrinsicProps<T>];
+type InteractionExecuteArgs<T extends APIInteraction> = WithIntrinsicProps<T>;
 
 interface IInteraction<T extends APIInteraction> {
     readonly data: InteractionData<T>;
-    readonly execute: (...props: InteractionExecuteArgs<T>) => Promise<void>;
+    readonly execute: (props: InteractionExecuteArgs<T>) => Promise<void>;
     readonly autocomplete?: T extends APIChatInputApplicationCommandInteraction
         ? (
-              ...props: InteractionExecuteArgs<APIApplicationCommandAutocompleteInteraction>
+              props: InteractionExecuteArgs<APIApplicationCommandAutocompleteInteraction>,
           ) => Promise<void>
         : never;
 }
