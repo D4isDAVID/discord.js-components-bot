@@ -19,11 +19,8 @@ export default {
         max_values: 1,
     },
     async execute({ api, data: interaction }) {
-        const channel =
-            interaction.data.resolved.channels[interaction.data.values[0]!]!;
-
         await api.interactions.reply(interaction.id, interaction.token, {
-            content: `The channel is: <#${channel.id}>`,
+            content: `The channel is: <#${interaction.data.values[0]!}>`,
             flags: MessageFlags.Ephemeral,
         });
     },

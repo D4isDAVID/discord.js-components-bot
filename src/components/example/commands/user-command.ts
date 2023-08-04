@@ -7,11 +7,8 @@ export default {
         type: ApplicationCommandType.User,
     },
     async execute({ api, data: interaction }) {
-        const user =
-            interaction.data.resolved.users[interaction.data.target_id]!;
-
         await api.interactions.reply(interaction.id, interaction.token, {
-            content: `The user is: <@${user.id}>`,
+            content: `The user is: <@${interaction.data.target_id}>`,
             flags: MessageFlags.Ephemeral,
         });
     },

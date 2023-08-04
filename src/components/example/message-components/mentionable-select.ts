@@ -8,16 +8,12 @@ export default {
         max_values: 1,
     },
     async execute({ api, data: interaction }) {
-        const { users, roles } = interaction.data.resolved;
-        const value = interaction.data.values[0]!;
-
-        const isRole = Boolean(roles);
-        const mentionable = isRole ? roles![value] : users![value];
+        const isRole = Boolean(interaction.data.resolved.roles);
 
         await api.interactions.reply(interaction.id, interaction.token, {
             content: `The ${isRole ? 'role' : 'user'} is: <@${
                 isRole ? '&' : ''
-            }${mentionable!.id}>`,
+            }${interaction.data.values[0]!}>`,
             flags: MessageFlags.Ephemeral,
         });
     },
