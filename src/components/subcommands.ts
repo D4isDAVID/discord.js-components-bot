@@ -58,6 +58,8 @@ type Subcommand<G extends boolean = false> = ISubcommandOrGroup<
 type SubcommandGroup =
     ISubcommandOrGroup<APIApplicationCommandSubcommandGroupOption>;
 
+// Bunch of duplicate code below because these types are too complicated for me
+
 const createSubcommandGroup = (
     group: Partial<SubcommandGroup> & Pick<SubcommandGroup, 'data'>,
     subcommandsArray: Subcommand<true>[],
