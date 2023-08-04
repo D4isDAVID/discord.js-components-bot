@@ -8,7 +8,7 @@ export default {
         description: 'Example command',
     },
     async execute({ api, data: interaction }) {
-        const { data: stringSelectData } = stringSelect;
+        const stringSelectData = { ...stringSelect.data };
 
         if (!interaction.guild_id)
             stringSelectData.options = stringSelectData.options.filter(
