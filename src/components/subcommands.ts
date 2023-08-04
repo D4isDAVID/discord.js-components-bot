@@ -40,14 +40,14 @@ const createSubcommandGroup = (
 
     return {
         data,
-        execute(props) {
+        async execute(props) {
             const { data: interaction } = props;
             const group = interaction.data
                 .options![0] as unknown as APIApplicationCommandSubcommandGroupOption;
             const subcommand = subcommands.get(group.options![0]!.name);
             return subcommand?.execute(props);
         },
-        autocomplete(props) {
+        async autocomplete(props) {
             const { data: interaction } = props;
             const group = interaction.data
                 .options![0] as unknown as APIApplicationCommandSubcommandGroupOption;
@@ -55,7 +55,7 @@ const createSubcommandGroup = (
             if (!subcommand?.autocomplete) return;
             return subcommand?.autocomplete(props);
         },
-    } as SubcommandGroup;
+    } satisfies SubcommandGroup;
 };
 
 const createSubcommandsCommand = (
@@ -72,14 +72,14 @@ const createSubcommandsCommand = (
 
     return {
         data,
-        execute(props) {
+        async execute(props) {
             const { data: interaction } = props;
             const subcommand = subcommands.get(
                 interaction.data.options![0]!.name,
             );
             return subcommand?.execute(props);
         },
-        autocomplete(props) {
+        async autocomplete(props) {
             const { data: interaction } = props;
             const subcommand = subcommands.get(
                 interaction.data.options![0]!.name,
@@ -87,7 +87,7 @@ const createSubcommandsCommand = (
             if (!subcommand?.autocomplete) return;
             return subcommand?.autocomplete(props);
         },
-    } as ChatInputCommand;
+    } satisfies ChatInputCommand;
 };
 
 export {
