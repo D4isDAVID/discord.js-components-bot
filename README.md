@@ -14,17 +14,17 @@ Database support is also not included by default, and can be manually added.
 
 ### Components System
 
-Typically when developing Discord bots, we place handlers, events,
-commands, interactions, etc. into their own respective folders.
+Typically when developing Discord bots, we place handlers, events, commands,
+interactions, etc. into their own respective folders.
 
-The components system creates a more organized way to store all
-related events, commands and other interactions in their own folder
+The components system creates a more organized way to store all related
+events, commands and other interactions in their own folder
 ([see components](./src/components/)).
 
 ### Subcommand Utilities
 
-The template adds subcommand utilities, allowing you to create
-commands with subcommands and subcommand groups with ease
+The template comes with subcommand utilities, allowing you to create commands
+with subcommands and subcommand groups with ease
 ([see example](./src/components/example/commands/subcommands.ts)).
 
 ## Configuration
