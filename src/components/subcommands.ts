@@ -4,7 +4,6 @@ import {
     APIApplicationCommandSubcommandGroupOption,
     APIApplicationCommandSubcommandOption,
     APIChatInputApplicationCommandInteraction,
-    RESTPostAPIChatInputApplicationCommandsJSONBody,
 } from '@discordjs/core';
 import { ChatInputCommand, InteractionExecuteArgs } from './data.js';
 
@@ -27,65 +26,67 @@ type SubcommandGroup =
     ISubcommandOrGroup<APIApplicationCommandSubcommandGroupOption>;
 
 const createSubcommandGroup = (
-    data: APIApplicationCommandSubcommandGroupOption,
+    group: Partial<SubcommandGroup> & Pick<SubcommandGroup, 'data'>,
     subcommandsArray: Subcommand[],
 ) => {
     const subcommands = new Collection<string, Subcommand>();
-    data.options = [];
+    group.data.options = [];
 
     subcommandsArray.map((subcommand) => {
         subcommands.set(subcommand.data.name, subcommand);
-        data.options?.push(subcommand.data);
+        group.data.options?.push(subcommand.data);
     });
 
     return {
-        data,
+        data: group.data,
         async execute(props) {
             const { data: interaction } = props;
-            const group = interaction.data
+            const groupOption = interaction.data
                 .options![0] as unknown as APIApplicationCommandSubcommandGroupOption;
-            const subcommand = subcommands.get(group.options![0]!.name);
-            return subcommand?.execute(props);
+            const subcommand = subcommands.get(groupOption.options![0]!.name);
+            await group.execute?.(props);
+            await subcommand?.execute(props);
         },
         async autocomplete(props) {
             const { data: interaction } = props;
-            const group = interaction.data
+            const groupOption = interaction.data
                 .options![0] as unknown as APIApplicationCommandSubcommandGroupOption;
-            const subcommand = subcommands.get(group.options![0]!.name);
-            if (!subcommand?.autocomplete) return;
-            return subcommand?.autocomplete(props);
+            const subcommand = subcommands.get(groupOption.options![0]!.name);
+            await group.autocomplete?.(props);
+            await subcommand?.autocomplete?.(props);
         },
     } satisfies SubcommandGroup;
 };
 
 const createSubcommandsCommand = (
-    data: RESTPostAPIChatInputApplicationCommandsJSONBody,
+    command: Partial<ChatInputCommand> & Pick<ChatInputCommand, 'data'>,
     subcommandsArray: (Subcommand | SubcommandGroup)[],
 ) => {
     const subcommands = new Collection<string, Subcommand | SubcommandGroup>();
-    data.options = [];
+    command.data.options = [];
 
     subcommandsArray.map((subcommand) => {
         subcommands.set(subcommand.data.name, subcommand);
-        data.options?.push(subcommand.data);
+        command.data.options?.push(subcommand.data);
     });
 
     return {
-        data,
+        data: command.data,
         async execute(props) {
             const { data: interaction } = props;
             const subcommand = subcommands.get(
                 interaction.data.options![0]!.name,
             );
-            return subcommand?.execute(props);
+            await command.execute?.(props);
+            await subcommand?.execute(props);
         },
         async autocomplete(props) {
             const { data: interaction } = props;
             const subcommand = subcommands.get(
                 interaction.data.options![0]!.name,
             );
-            if (!subcommand?.autocomplete) return;
-            return subcommand?.autocomplete(props);
+            await command.autocomplete?.(props);
+            await subcommand?.autocomplete?.(props);
         },
     } satisfies ChatInputCommand;
 };

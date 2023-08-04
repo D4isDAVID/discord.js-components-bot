@@ -21,15 +21,19 @@ const exampleSubcommand = {
 
 export default createSubcommandsCommand(
     {
-        name: 'subcommands',
-        description: 'An example command with subcommands',
+        data: {
+            name: 'subcommands',
+            description: 'An example command with subcommands',
+        },
     },
     [
         createSubcommandGroup(
             {
-                name: 'group',
-                description: 'An example subcommand group',
-                type: ApplicationCommandOptionType.SubcommandGroup,
+                data: {
+                    name: 'group',
+                    description: 'An example subcommand group',
+                    type: ApplicationCommandOptionType.SubcommandGroup,
+                },
             },
             [exampleSubcommand],
         ),
