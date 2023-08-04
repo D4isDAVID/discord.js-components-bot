@@ -1,4 +1,5 @@
 import { ApplicationCommandType, MessageFlags } from '@discordjs/core';
+import { messageLink } from '@discordjs/formatters';
 import { MessageCommand } from '../../data.js';
 
 export default {
@@ -7,11 +8,11 @@ export default {
         type: ApplicationCommandType.Message,
     },
     async execute({ api, data: interaction }) {
-        const { content } =
-            interaction.data.resolved.messages[interaction.data.target_id]!;
-
         await api.interactions.reply(interaction.id, interaction.token, {
-            content: `The message says: ${content}`,
+            content: `The message is: ${messageLink(
+                interaction.channel.id,
+                interaction.data.target_id,
+            )}`,
             flags: MessageFlags.Ephemeral,
         });
     },
