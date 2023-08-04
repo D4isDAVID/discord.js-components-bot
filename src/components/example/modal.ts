@@ -1,5 +1,6 @@
 import { ComponentType, MessageFlags, TextInputStyle } from '@discordjs/core';
 import { Modal } from '../data.js';
+import { mapModalTextInputValues } from '../interactions.js';
 
 export default {
     data: {
@@ -11,9 +12,10 @@ export default {
                 components: [
                     {
                         type: ComponentType.TextInput,
-                        custom_id: 'message',
-                        label: 'Message',
-                        placeholder: 'Enter a message to be sent by the bot!',
+                        custom_id: 'content',
+                        label: 'Message Content',
+                        placeholder:
+                            'The message content to be sent by the bot',
                         style: TextInputStyle.Paragraph,
                         max_length: 2000,
                         required: true,
@@ -23,8 +25,10 @@ export default {
         ],
     },
     async execute({ data: interaction, api }) {
+        const { content } = mapModalTextInputValues(interaction.data);
+
         await api.interactions.reply(interaction.id, interaction.token, {
-            content: interaction.data.components[0]?.components[0]?.value,
+            content,
             flags: MessageFlags.Ephemeral,
         });
     },

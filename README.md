@@ -21,6 +21,11 @@ The components system creates a more organized way to store all related
 events, commands and other interactions in their own folder
 ([see components](./src/components/)).
 
+### Interaction Utilities
+
+The template comes with interaction utilities, allowing you to handle user
+input with ease ([see `interactions.ts`](./src/components/interactions.ts)).
+
 ### Subcommand Utilities
 
 The template comes with subcommand utilities, allowing you to create commands
