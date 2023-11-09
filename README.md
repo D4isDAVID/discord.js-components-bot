@@ -1,4 +1,4 @@
-# Discord.js Components Bot
+# Discord.js Components Bot (`djs-core`)
 
 This is a [discord.js] bot template with a components system.
 It is written in [TypeScript], and uses [`@discordjs/core`][@discordjs/core].
@@ -48,6 +48,6 @@ with subcommands and subcommand groups with ease
 - `npm run start` - Start your bot
 
 [discord.js]: https://discord.js.org
-[@discordjs/core]: https://discord.js.org/docs
+[@discordjs/core]: https://discord.js.org/docs/packages/core
 [prettier]: https://prettier.io
 [typescript]: https://typescriptlang.org
