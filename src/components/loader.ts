@@ -1,9 +1,4 @@
-import {
-    ClientEvents,
-    Collection,
-    RESTPutAPIApplicationCommandsJSONBody,
-    RestEvents,
-} from 'discord.js';
+import { Collection, RESTPutAPIApplicationCommandsJSONBody } from 'discord.js';
 import EventEmitter from 'node:events';
 import { readdir } from 'node:fs/promises';
 import { stdout } from 'node:process';
@@ -13,13 +8,11 @@ import { inspect } from 'node:util';
 import { client, exitOnEventError } from '../env.js';
 import {
     ApplicationCommand,
-    ClientEventsMap,
     Component,
     EventName,
     EventsMap,
     MessageComponent,
     Modal,
-    RestEventsMap,
 } from './data.js';
 
 const COMPONENTS_URL = new URL('./', import.meta.url);
@@ -31,29 +24,19 @@ const interactions = {
 };
 
 const commands: RESTPutAPIApplicationCommandsJSONBody = [];
-const events = {
-    rest: [],
-    client: [],
-} as {
-    rest: RestEventsMap[keyof RestEvents][];
-    client: ClientEventsMap[keyof ClientEvents][];
-};
-
-const registerEvent = (emitter: EventEmitter, event: EventsMap[EventName]) => {
-    emitter[event.type](event.name, (...args) =>
-        //@ts-ignore
-        event.execute(...args).catch((err) => {
-            if (exitOnEventError) throw err;
-            console.error(inspect(err));
-        }),
-    );
-};
 
 const registerEvents = (
     emitter: EventEmitter,
     events: EventsMap[EventName][],
 ) => {
-    for (const event of events) registerEvent(emitter, event);
+    for (const event of events)
+        emitter[event.type](event.name, (...args) =>
+            //@ts-ignore
+            event.execute(...args).catch((err) => {
+                if (exitOnEventError) throw err;
+                console.error(inspect(err));
+            }),
+        );
 };
 
 const loadComponent = ({
@@ -103,5 +86,5 @@ const loadComponents = async () => {
     console.log('Done!');
 };
 
-export { commands, events, interactions };
+export { commands, interactions };
 export default loadComponents;
