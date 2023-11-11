@@ -51,16 +51,16 @@ interface ISubcommandOrGroup<
     ) => Promise<void>;
 }
 
-type Subcommand<G extends boolean = false> = ISubcommandOrGroup<
+export type Subcommand<G extends boolean = false> = ISubcommandOrGroup<
     APIApplicationCommandSubcommandOption,
     G
 >;
-type SubcommandGroup =
+export type SubcommandGroup =
     ISubcommandOrGroup<APIApplicationCommandSubcommandGroupOption>;
 
 // Bunch of duplicate code below because these types are too complicated for me
 
-const createSubcommandGroup = (
+export const createSubcommandGroup = (
     group: Partial<SubcommandGroup> & Pick<SubcommandGroup, 'data'>,
     subcommandsArray: Subcommand<true>[],
 ) => {
@@ -99,7 +99,7 @@ const createSubcommandGroup = (
     } satisfies SubcommandGroup;
 };
 
-const createSubcommandsCommand = (
+export const createSubcommandsCommand = (
     command: Partial<ChatInputCommand> & Pick<ChatInputCommand, 'data'>,
     subcommandsArray: (Subcommand | SubcommandGroup)[],
 ) => {
@@ -142,11 +142,4 @@ const createSubcommandsCommand = (
             await subcommand?.autocomplete?.(props);
         },
     } satisfies ChatInputCommand;
-};
-
-export {
-    Subcommand,
-    SubcommandGroup,
-    createSubcommandGroup,
-    createSubcommandsCommand,
 };
