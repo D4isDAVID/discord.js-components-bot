@@ -35,8 +35,8 @@ type EventName = keyof RestEvents | keyof ClientEvents;
 type EventExecuteArgs<T extends EventName> = T extends RESTEvents
     ? RestEvents[T]
     : T extends Events
-    ? ClientEvents[T]
-    : never;
+      ? ClientEvents[T]
+      : never;
 
 interface IEvent<T extends EventName> {
     readonly type: 'on' | 'once';
@@ -59,15 +59,15 @@ type InteractionData<T extends Interaction> = T extends CommandInteraction
     ? T extends ChatInputCommandInteraction
         ? RESTPostAPIChatInputApplicationCommandsJSONBody
         : T extends ContextMenuCommandInteraction
-        ? RESTPostAPIContextMenuApplicationCommandsJSONBody & {
-              type: T['commandType'];
-          }
-        : never
+          ? RESTPostAPIContextMenuApplicationCommandsJSONBody & {
+                type: T['commandType'];
+            }
+          : never
     : T extends MessageComponentInteraction
-    ? MessageComponentDataMap[T['componentType']]
-    : T extends ModalSubmitInteraction
-    ? APIModalInteractionResponseCallbackData
-    : never;
+      ? MessageComponentDataMap[T['componentType']]
+      : T extends ModalSubmitInteraction
+        ? APIModalInteractionResponseCallbackData
+        : never;
 
 interface IInteraction<T extends Interaction> {
     readonly data: InteractionData<T>;
