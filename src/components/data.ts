@@ -35,10 +35,10 @@ export type EventName =
 export type EventExecuteArgs<T extends EventName> = T extends keyof RestEvents
     ? RestEvents[T]
     : T extends keyof ManagerShardEventsMap
-    ? ManagerShardEventsMap[T]
-    : T extends keyof MappedEvents
-    ? MappedEvents[T]
-    : never;
+      ? ManagerShardEventsMap[T]
+      : T extends keyof MappedEvents
+        ? MappedEvents[T]
+        : never;
 
 export interface IEvent<T extends EventName> {
     readonly type: 'on' | 'once';
@@ -50,8 +50,8 @@ export type ContextMenuInteractionType<T extends APIContextMenuInteraction> =
     T extends APIUserApplicationCommandInteraction
         ? ApplicationCommandType.User
         : T extends APIMessageApplicationCommandInteraction
-        ? ApplicationCommandType.Message
-        : never;
+          ? ApplicationCommandType.Message
+          : never;
 
 export interface MessageComponentDataMap {
     [ComponentType.ActionRow]: never;
@@ -69,15 +69,15 @@ export type InteractionData<T extends APIInteraction> =
         ? T extends APIChatInputApplicationCommandInteraction
             ? RESTPostAPIChatInputApplicationCommandsJSONBody
             : T extends APIContextMenuInteraction
-            ? RESTPostAPIContextMenuApplicationCommandsJSONBody & {
-                  type: ContextMenuInteractionType<T>;
-              }
-            : never
+              ? RESTPostAPIContextMenuApplicationCommandsJSONBody & {
+                    type: ContextMenuInteractionType<T>;
+                }
+              : never
         : T extends APIMessageComponentInteraction
-        ? MessageComponentDataMap[T['data']['component_type']]
-        : T extends APIModalSubmitInteraction
-        ? APIModalInteractionResponseCallbackData
-        : never;
+          ? MessageComponentDataMap[T['data']['component_type']]
+          : T extends APIModalSubmitInteraction
+            ? APIModalInteractionResponseCallbackData
+            : never;
 
 export type InteractionExecuteArgs<T extends APIInteraction> =
     WithIntrinsicProps<T>;

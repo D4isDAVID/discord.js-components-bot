@@ -22,8 +22,8 @@ type SubcommandOrGroupExecuteArgs<
     subcommandGroupData: T extends APIApplicationCommandSubcommandGroupOption
         ? APIApplicationCommandSubcommandGroupOption
         : G extends true
-        ? APIApplicationCommandSubcommandGroupOption
-        : never;
+          ? APIApplicationCommandSubcommandGroupOption
+          : never;
 };
 
 interface ISubcommandOrGroup<
