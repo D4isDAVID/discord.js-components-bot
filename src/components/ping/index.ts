@@ -15,10 +15,14 @@ export default {
                 if (client.ws.ping < 0) {
                     const response = await interaction.reply({
                         content: pingMessage('fetching...'),
+                        fetchReply: true,
                     });
                     await interaction.editReply({
                         content: pingMessage(
-                            `${response.createdTimestamp - Date.now()}ms`,
+                            `~${
+                                response.createdTimestamp -
+                                interaction.createdTimestamp
+                            }ms`,
                         ),
                     });
                     return;
