@@ -10,8 +10,8 @@
     "format": "prettier --ignore-path .gitignore -w .",
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "deploy": "node --require dotenv/config dist/deploy.js",
-    "start": "node --require dotenv/config ."
+    "deploy": "node --env-file=.env dist/deploy.js",
+    "start": "node --env-file=.env ."
   },
   "dependencies": {
     "@discordjs/collection": "^2.0.0",
@@ -22,7 +22,6 @@
   },
   "devDependencies": {
     "@types/node": "^20.10.4",
-    "dotenv": "^16.3.1",
     "prettier": "^3.1.0",
     "typescript": "^5.3.3"
   }
