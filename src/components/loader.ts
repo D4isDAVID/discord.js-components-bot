@@ -27,12 +27,14 @@ export const interactions = {
 export const commands: RESTPutAPIApplicationCommandsJSONBody = [];
 
 const registerEvent = (emitter: EventEmitter, event: EventsMap[EventName]) => {
-    emitter[event.type](event.name, (...args) =>
-        event.execute(...args).catch((err) => {
+    emitter[event.type](event.name, async (...args) => {
+        try {
+            await event.execute(...args);
+        } catch (err) {
             if (exitOnEventError) throw err;
             console.error(inspect(err));
-        }),
-    );
+        }
+    });
 };
 
 const registerEvents = (
