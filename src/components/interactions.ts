@@ -27,7 +27,7 @@ const isBasicOption = (
         ApplicationCommandOptionType.User,
     ].includes(option.type);
 
-const mapChatInputOptionValues = ({
+export const mapChatInputOptionValues = ({
     options,
 }:
     | APIChatInputApplicationCommandInteractionData
@@ -41,7 +41,7 @@ const mapChatInputOptionValues = ({
     return values;
 };
 
-const mapModalTextInputValues = ({ components }: APIModalSubmission) => {
+export const mapModalTextInputValues = ({ components }: APIModalSubmission) => {
     const values: Record<string, string> = {};
     for (const {
         components: [textInput],
@@ -49,5 +49,3 @@ const mapModalTextInputValues = ({ components }: APIModalSubmission) => {
         values[textInput!.custom_id] = textInput!.value;
     return values;
 };
-
-export { mapChatInputOptionValues, mapModalTextInputValues };

@@ -18,13 +18,13 @@ import {
 
 const COMPONENTS_URL = new URL('./', import.meta.url);
 
-const interactions = {
+export const interactions = {
     commands: new Collection<string, ApplicationCommand>(),
     messageComponents: new Collection<string, MessageComponent>(),
     modals: new Collection<string, Modal>(),
 };
 
-const commands: RESTPutAPIApplicationCommandsJSONBody = [];
+export const commands: RESTPutAPIApplicationCommandsJSONBody = [];
 
 const registerEvent = (emitter: EventEmitter, event: EventsMap[EventName]) => {
     emitter[event.type](event.name, (...args) =>
@@ -69,7 +69,7 @@ const loadComponent = ({
     });
 };
 
-const loadComponents = async () => {
+export const loadComponents = async () => {
     stdout.write('Loading components... ');
 
     for await (const folder of (
@@ -90,6 +90,3 @@ const loadComponents = async () => {
 
     console.log('Done!');
 };
-
-export { commands, interactions };
-export default loadComponents;

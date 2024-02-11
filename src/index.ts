@@ -1,4 +1,4 @@
-import loadComponents from './components/loader.js';
+import { loadComponents } from './components/loader.js';
 import { gateway } from './env.js';
 
 await loadComponents();
