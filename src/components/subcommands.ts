@@ -7,6 +7,7 @@ import {
     APIInteraction,
     ApplicationCommandOptionType,
 } from '@discordjs/core';
+import { Awaitable } from '@discordjs/util';
 import { ChatInputCommand, InteractionExecuteArgs } from './data.js';
 
 type SubcommandOrGroupExecuteArgs<
@@ -41,14 +42,14 @@ interface ISubcommandOrGroup<
             T,
             G
         >,
-    ) => Promise<void>;
+    ) => Awaitable<void>;
     readonly autocomplete?: (
         props: SubcommandOrGroupExecuteArgs<
             APIApplicationCommandAutocompleteInteraction,
             T,
             G
         >,
-    ) => Promise<void>;
+    ) => Awaitable<void>;
 }
 
 export type Subcommand<G extends boolean = false> = ISubcommandOrGroup<

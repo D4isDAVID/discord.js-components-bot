@@ -25,6 +25,7 @@ import {
     WithIntrinsicProps,
 } from '@discordjs/core';
 import { RestEvents } from '@discordjs/rest';
+import { Awaitable } from '@discordjs/util';
 import { ManagerShardEventsMap } from '@discordjs/ws';
 
 export type EventName =
@@ -43,7 +44,7 @@ export type EventExecuteArgs<T extends EventName> = T extends keyof RestEvents
 export interface IEvent<T extends EventName> {
     readonly type: 'on' | 'once';
     readonly name: T;
-    readonly execute: (...args: EventExecuteArgs<T>) => Promise<void>;
+    readonly execute: (...args: EventExecuteArgs<T>) => Awaitable<void>;
 }
 
 export type ContextMenuInteractionType<T extends APIContextMenuInteraction> =
@@ -84,11 +85,11 @@ export type InteractionExecuteArgs<T extends APIInteraction> =
 
 export interface IInteraction<T extends APIInteraction> {
     readonly data: InteractionData<T>;
-    readonly execute: (props: InteractionExecuteArgs<T>) => Promise<void>;
+    readonly execute: (props: InteractionExecuteArgs<T>) => Awaitable<void>;
     readonly autocomplete?: T extends APIChatInputApplicationCommandInteraction
         ? (
               props: InteractionExecuteArgs<APIApplicationCommandAutocompleteInteraction>,
-          ) => Promise<void>
+          ) => Awaitable<void>
         : never;
 }
 
