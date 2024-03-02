@@ -10,9 +10,17 @@ import roleSelect from './message-components/role-select.js';
 import stringSelect from './message-components/string-select.js';
 import userSelect from './message-components/user-select.js';
 import modal from './modal.js';
+import commandWithModal from './stateful/command-with-modal.js';
+import statefulModal from './stateful/stateful-modal.js';
 
 export default {
-    commands: [chatInputCommand, subcommands, userCommand, messageCommand],
+    commands: [
+        chatInputCommand,
+        subcommands,
+        userCommand,
+        messageCommand,
+        commandWithModal,
+    ],
     messageComponents: [
         button,
         stringSelect,
@@ -21,5 +29,5 @@ export default {
         mentionableSelect,
         channelSelect,
     ],
-    modals: [modal],
+    modals: [modal, statefulModal],
 } satisfies Component;

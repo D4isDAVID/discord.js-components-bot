@@ -15,6 +15,7 @@ import {
     MessageComponent,
     Modal,
 } from './data.js';
+import { isStatefulInteraction } from './stateful.js';
 
 const COMPONENTS_URL = new URL('./', import.meta.url);
 
@@ -25,6 +26,11 @@ export const interactions = {
 };
 
 export const commands: RESTPutAPIApplicationCommandsJSONBody = [];
+
+export const statefuls = {
+    messageComponents: [],
+    modals: [],
+} as { messageComponents: string[]; modals: string[] };
 
 const registerEvent = (emitter: EventEmitter, event: EventsMap[EventName]) => {
     emitter[event.type](event.name, async (...args) => {
@@ -61,13 +67,17 @@ const loadComponent = ({
         commands.push(command.data);
     });
     messageComponents?.map((messageComponent) => {
-        interactions.messageComponents.set(
-            messageComponent.data.custom_id,
-            messageComponent,
-        );
+        const customId = messageComponent.data.custom_id;
+        interactions.messageComponents.set(customId, messageComponent);
+
+        if (isStatefulInteraction(messageComponent))
+            statefuls.messageComponents.push(customId);
     });
     modals?.map((modal) => {
-        interactions.modals.set(modal.data.custom_id, modal);
+        const customId = modal.data.custom_id;
+        interactions.modals.set(customId, modal);
+
+        if (isStatefulInteraction(modal)) statefuls.modals.push(customId);
     });
 };
 

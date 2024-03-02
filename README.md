@@ -24,13 +24,18 @@ events, commands and other interactions in their own folder
 ### Interaction Utilities
 
 The template comes with interaction utilities, allowing you to handle user
-input with ease ([see `interactions.ts`](./src/components/interactions.ts)).
+input with ease ([see example](./src/components/example/modal.ts)).
 
 ### Subcommand Utilities
 
 The template comes with subcommand utilities, allowing you to create commands
 with subcommands and subcommand groups with ease
 ([see example](./src/components/example/commands/subcommands.ts)).
+
+### Stateful Interactions
+
+The template comes with interaction utilities, allowing you to handle user
+input with ease ([see example](./src/components/example/stateful/stateful-modal.ts)).
 
 ## Configuration
 

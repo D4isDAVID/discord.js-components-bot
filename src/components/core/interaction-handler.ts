@@ -4,7 +4,11 @@ import {
     InteractionType,
 } from '@discordjs/core';
 import { GatewayEvent } from '../data.js';
-import { interactions } from '../loader.js';
+import { interactions, statefuls } from '../loader.js';
+
+const findStateful = (id: string, list: string[]): string | void => {
+    for (const staticId of list) if (id.startsWith(staticId)) return staticId;
+};
 
 export default {
     name: GatewayDispatchEvents.InteractionCreate,
@@ -37,9 +41,20 @@ export default {
                 break;
 
             case InteractionType.MessageComponent:
-                const component = interactions.messageComponents.get(
-                    interaction.data.custom_id,
-                );
+                const componentId = interaction.data.custom_id;
+
+                let component = interactions.messageComponents.get(componentId);
+
+                if (!component) {
+                    const staticId = findStateful(
+                        componentId,
+                        statefuls.messageComponents,
+                    );
+
+                    if (staticId)
+                        component =
+                            interactions.messageComponents.get(staticId);
+                }
 
                 if (!component)
                     throw new Error(
@@ -52,9 +67,15 @@ export default {
                 break;
 
             case InteractionType.ModalSubmit:
-                const modal = interactions.modals.get(
-                    interaction.data.custom_id,
-                );
+                const modalId = interaction.data.custom_id;
+
+                let modal = interactions.modals.get(modalId);
+
+                if (!modal) {
+                    const staticId = findStateful(modalId, statefuls.modals);
+
+                    if (staticId) modal = interactions.modals.get(staticId);
+                }
 
                 if (!modal)
                     throw new Error(
