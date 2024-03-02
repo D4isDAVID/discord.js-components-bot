@@ -34,8 +34,9 @@ with subcommands and subcommand groups with ease
 
 ### Stateful Interactions
 
-The template comes with interaction utilities, allowing you to handle user
-input with ease ([see example](./src/components/example/stateful/stateful-modal.ts)).
+The template comes with stateful modals & message components, allowing you to
+handle simple state between interactions with ease
+([see example](./src/components/example/stateful/stateful-modal.ts)).
 
 ## Configuration
 
