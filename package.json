@@ -8,7 +8,7 @@
   "scripts": {
     "lint": "prettier --ignore-path .gitignore -c .",
     "format": "prettier --ignore-path .gitignore -w .",
-    "build": "tsc",
+    "build": "rimraf dist && tsc",
     "build:watch": "tsc --watch",
     "deploy": "node --env-file=.env dist/deploy.js",
     "start": "node --env-file=.env ."
@@ -24,6 +24,7 @@
   "devDependencies": {
     "@types/node": "^20.14.7",
     "prettier": "^3.3.2",
+    "rimraf": "^5.0.7",
     "typescript": "^5.5.2"
   }
 }
