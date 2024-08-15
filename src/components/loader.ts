@@ -44,7 +44,9 @@ function registerEvent(emitter: EventEmitter, event: EventsMap[EventName]) {
 }
 
 function registerEvents(emitter: EventEmitter, events: EventsMap[EventName][]) {
-    for (const event of events) registerEvent(emitter, event);
+    for (const event of events) {
+        registerEvent(emitter, event);
+    }
 }
 
 function loadComponent({

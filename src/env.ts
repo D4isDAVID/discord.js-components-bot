@@ -4,7 +4,11 @@ import { WebSocketManager } from '@discordjs/ws';
 import { env } from 'node:process';
 
 function toEnvBool(str?: string) {
-    return str === 'false' ? false : Boolean(str);
+    if (str === 'false') {
+        return false;
+    }
+
+    return Boolean(str);
 }
 
 export const botToken = env.BOT_TOKEN ?? '';

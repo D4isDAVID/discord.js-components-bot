@@ -32,21 +32,26 @@ export function mapChatInputOptionValues({
     options,
 }:
     | APIChatInputApplicationCommandInteractionData
-    | APIApplicationCommandSubcommandOption) {
-    const values: MappedChatInputOptionValues = {};
-    if (options)
-        for (const option of options) {
-            if (!isBasicOption(option)) continue;
-            values[option.name] = option.value;
-        }
-    return values;
+    | APIApplicationCommandSubcommandOption): MappedChatInputOptionValues {
+    return (
+        options?.reduce((values, option) => {
+            if (isBasicOption(option)) {
+                values[option.name] = option.value;
+            }
+
+            return values;
+        }, {} as MappedChatInputOptionValues) ?? {}
+    );
 }
 
-export function mapModalTextInputValues({ components }: APIModalSubmission) {
-    const values: Record<string, string> = {};
-    for (const {
-        components: [textInput],
-    } of components)
-        values[textInput!.custom_id] = textInput!.value;
-    return values;
+export function mapModalTextInputValues({
+    components,
+}: APIModalSubmission): Record<string, string> {
+    return components.reduce(
+        (values, { components: [textInput] }) => {
+            values[textInput!.custom_id] = textInput!.value;
+            return values;
+        },
+        {} as Record<string, string>,
+    );
 }
