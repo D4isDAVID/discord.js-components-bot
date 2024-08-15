@@ -2,7 +2,9 @@ import { WebSocketShardEvents } from '@discordjs/ws';
 import { WebSocketEvent } from '../data.js';
 
 let ping = -1;
-export const getPing = () => ping;
+export function getPing() {
+    return ping;
+}
 
 export default {
     name: WebSocketShardEvents.HeartbeatComplete,

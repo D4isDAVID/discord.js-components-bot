@@ -3,7 +3,9 @@ import { gateway } from '../../env.js';
 import { ChatInputCommand } from '../data.js';
 import { getPing } from './heartbeat.js';
 
-const pingMessage = (p: string) => `🏓 Pong! \`${p}\``;
+function pingMessage(p: string) {
+    return `🏓 Pong! \`${p}\``;
+}
 
 export default {
     data: {

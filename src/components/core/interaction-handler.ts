@@ -6,9 +6,9 @@ import {
 import { GatewayEvent } from '../data.js';
 import { interactions, statefuls } from '../loader.js';
 
-const findStateful = (id: string, list: string[]): string | void => {
+function findStateful(id: string, list: string[]): string | void {
     for (const staticId of list) if (id.startsWith(staticId)) return staticId;
-};
+}
 
 export default {
     name: GatewayDispatchEvents.InteractionCreate,

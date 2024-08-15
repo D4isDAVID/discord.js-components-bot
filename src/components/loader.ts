@@ -32,7 +32,7 @@ export const statefuls = {
     modals: [],
 } as { messageComponents: string[]; modals: string[] };
 
-const registerEvent = (emitter: EventEmitter, event: EventsMap[EventName]) => {
+function registerEvent(emitter: EventEmitter, event: EventsMap[EventName]) {
     emitter[event.type](event.name, async (...args) => {
         try {
             await event.execute(...args);
@@ -41,23 +41,20 @@ const registerEvent = (emitter: EventEmitter, event: EventsMap[EventName]) => {
             console.error(inspect(err));
         }
     });
-};
+}
 
-const registerEvents = (
-    emitter: EventEmitter,
-    events: EventsMap[EventName][],
-) => {
+function registerEvents(emitter: EventEmitter, events: EventsMap[EventName][]) {
     for (const event of events) registerEvent(emitter, event);
-};
+}
 
-const loadComponent = ({
+function loadComponent({
     restEvents,
     wsEvents,
     gatewayEvents,
     commands: componentCommands,
     messageComponents,
     modals,
-}: Component) => {
+}: Component) {
     restEvents && registerEvents(rest, restEvents);
     wsEvents && registerEvents(gateway, wsEvents);
     gatewayEvents && registerEvents(client, gatewayEvents);
@@ -79,9 +76,9 @@ const loadComponent = ({
 
         if (isStatefulInteraction(modal)) statefuls.modals.push(customId);
     });
-};
+}
 
-export const loadComponents = async () => {
+export async function loadComponents() {
     stdout.write('Loading components... ');
 
     for await (const folder of (
@@ -101,4 +98,4 @@ export const loadComponents = async () => {
     }
 
     console.log('Done!');
-};
+}

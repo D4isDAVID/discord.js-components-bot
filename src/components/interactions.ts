@@ -10,12 +10,12 @@ import {
 
 type MappedChatInputOptionValues = Record<string, string | number | boolean>;
 
-const isBasicOption = (
+function isBasicOption(
     option:
         | APIApplicationCommandInteractionDataOption
         | APIApplicationCommandBasicOption,
-): option is APIApplicationCommandInteractionDataBasicOption =>
-    [
+): option is APIApplicationCommandInteractionDataBasicOption {
+    return [
         ApplicationCommandOptionType.Attachment,
         ApplicationCommandOptionType.Boolean,
         ApplicationCommandOptionType.Channel,
@@ -26,12 +26,13 @@ const isBasicOption = (
         ApplicationCommandOptionType.String,
         ApplicationCommandOptionType.User,
     ].includes(option.type);
+}
 
-export const mapChatInputOptionValues = ({
+export function mapChatInputOptionValues({
     options,
 }:
     | APIChatInputApplicationCommandInteractionData
-    | APIApplicationCommandSubcommandOption) => {
+    | APIApplicationCommandSubcommandOption) {
     const values: MappedChatInputOptionValues = {};
     if (options)
         for (const option of options) {
@@ -39,13 +40,13 @@ export const mapChatInputOptionValues = ({
             values[option.name] = option.value;
         }
     return values;
-};
+}
 
-export const mapModalTextInputValues = ({ components }: APIModalSubmission) => {
+export function mapModalTextInputValues({ components }: APIModalSubmission) {
     const values: Record<string, string> = {};
     for (const {
         components: [textInput],
     } of components)
         values[textInput!.custom_id] = textInput!.value;
     return values;
-};
+}

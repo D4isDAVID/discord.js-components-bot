@@ -61,10 +61,10 @@ export type SubcommandGroup =
 
 // Bunch of duplicate code below because these types are too complicated for me
 
-export const createSubcommandGroup = (
+export function createSubcommandGroup(
     group: Partial<SubcommandGroup> & Pick<SubcommandGroup, 'data'>,
     subcommandsArray: Subcommand<true>[],
-) => {
+) {
     const subcommands = new Collection<string, Subcommand<true>>();
     group.data.options = [];
 
@@ -98,12 +98,12 @@ export const createSubcommandGroup = (
             await subcommand?.autocomplete?.(props);
         },
     } satisfies SubcommandGroup;
-};
+}
 
-export const createSubcommandsCommand = (
+export function createSubcommandsCommand(
     command: Partial<ChatInputCommand> & Pick<ChatInputCommand, 'data'>,
     subcommandsArray: (Subcommand | SubcommandGroup)[],
-) => {
+) {
     const subcommands = new Collection<string, Subcommand | SubcommandGroup>();
     command.data.options = [];
 
@@ -143,4 +143,4 @@ export const createSubcommandsCommand = (
             await subcommand?.autocomplete?.(props);
         },
     } satisfies ChatInputCommand;
-};
+}

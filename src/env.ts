@@ -3,7 +3,9 @@ import { REST } from '@discordjs/rest';
 import { WebSocketManager } from '@discordjs/ws';
 import { env } from 'node:process';
 
-const toEnvBool = (str?: string) => (str === 'false' ? false : Boolean(str));
+function toEnvBool(str?: string) {
+    return str === 'false' ? false : Boolean(str);
+}
 
 export const botToken = env.BOT_TOKEN ?? '';
 export const shardCount = env.BOT_SHARD_COUNT

@@ -15,21 +15,21 @@ export type StatefulInteraction<T extends StatefulInteractionType> = T & {
     readonly stateful: (state: string) => T['data'];
 };
 
-export const isStatefulInteraction = <T extends StatefulInteractionType>(
+export function isStatefulInteraction<T extends StatefulInteractionType>(
     interaction: T,
-): interaction is StatefulInteraction<T> => {
+): interaction is StatefulInteraction<T> {
     return (
         'stateful' in interaction && typeof interaction.stateful === 'function'
     );
-};
+}
 
 // This one is in complete type hell...
-export const createStatefulInteraction = <T extends StatefulInteractionType>(
+export function createStatefulInteraction<T extends StatefulInteractionType>(
     interaction: Omit<T, 'execute'> & {
         readonly execute: (props: StatefulExecuteArgs<T>) => Awaitable<void>;
     },
-): StatefulInteraction<T> =>
-    ({
+): StatefulInteraction<T> {
+    return {
         data: interaction.data,
         async execute(props: ExecuteArgs<T>) {
             const state = props.data.data.custom_id.replace(
@@ -43,4 +43,5 @@ export const createStatefulInteraction = <T extends StatefulInteractionType>(
             newData.custom_id += state;
             return newData;
         },
-    }) as unknown as StatefulInteraction<T>;
+    } as unknown as StatefulInteraction<T>;
+}
