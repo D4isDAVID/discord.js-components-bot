@@ -1,8 +1,8 @@
 import { ButtonStyle, ComponentType } from '@discordjs/core';
 import { Button } from '../../data.js';
-import modal from '../modal.js';
+import { exampleModal } from '../modal.js';
 
-export default {
+export const exampleButton = {
     data: {
         type: ComponentType.Button,
         custom_id: 'button_example',
@@ -13,7 +13,7 @@ export default {
         await api.interactions.createModal(
             interaction.id,
             interaction.token,
-            modal.data,
+            exampleModal.data,
         );
     },
 } satisfies Button;

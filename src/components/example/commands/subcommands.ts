@@ -5,7 +5,7 @@ import {
     createSubcommandsCommand,
 } from '../../subcommands.js';
 
-export default createSubcommandsCommand(
+export const exampleSubcommandsCommand = createSubcommandsCommand(
     {
         data: {
             name: 'subcommands',

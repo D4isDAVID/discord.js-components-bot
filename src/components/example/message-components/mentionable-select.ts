@@ -1,7 +1,7 @@
 import { ComponentType, MessageFlags } from '@discordjs/core';
 import { MentionableSelect } from '../../data.js';
 
-export default {
+export const exampleMentionableSelect = {
     data: {
         type: ComponentType.MentionableSelect,
         custom_id: 'mentionable_select_example',

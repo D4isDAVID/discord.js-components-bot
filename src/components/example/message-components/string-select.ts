@@ -4,11 +4,11 @@ import {
     MessageFlags,
 } from '@discordjs/core';
 import { StringSelect } from '../../data.js';
-import button from './button.js';
-import channelSelect from './channel-select.js';
-import mentionableSelect from './mentionable-select.js';
-import roleSelect from './role-select.js';
-import userSelect from './user-select.js';
+import { exampleButton } from './button.js';
+import { exampleChannelSelect } from './channel-select.js';
+import { exampleMentionableSelect } from './mentionable-select.js';
+import { exampleRoleSelect } from './role-select.js';
+import { exampleUserSelect } from './user-select.js';
 
 export const options: Record<
     string,
@@ -22,33 +22,33 @@ export const options: Record<
     button: {
         label: 'Button',
         description: 'Show me a cool button!',
-        data: button.data,
+        data: exampleButton.data,
     },
     user_select: {
         label: 'User Select Menu',
         description: 'Show me a cool user select menu!',
-        data: userSelect.data,
+        data: exampleUserSelect.data,
     },
     role_select: {
         label: 'Role Select Menu',
         description: 'Show me a cool role select menu!',
-        data: roleSelect.data,
+        data: exampleRoleSelect.data,
         guildBased: true,
     },
     mentionable_select: {
         label: 'Mentionable Select Menu',
         description: 'Show me a cool mentionable select menu!',
-        data: mentionableSelect.data,
+        data: exampleMentionableSelect.data,
     },
     channel_select: {
         label: 'Channel Select Menu',
         description: 'Show me a cool channel select menu!',
-        data: channelSelect.data,
+        data: exampleChannelSelect.data,
         guildBased: true,
     },
 };
 
-export default {
+export const exampleStringSelect = {
     data: {
         type: ComponentType.StringSelect,
         custom_id: 'string_select_example',

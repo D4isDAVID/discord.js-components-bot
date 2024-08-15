@@ -2,7 +2,7 @@ import { ApplicationCommandType, MessageFlags } from '@discordjs/core';
 import { messageLink } from '@discordjs/formatters';
 import { MessageCommand } from '../../data.js';
 
-export default {
+export const exampleMessageCommand = {
     data: {
         name: 'message_example',
         type: ApplicationCommandType.Message,

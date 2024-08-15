@@ -1,7 +1,7 @@
 import { ApplicationCommandType, MessageFlags } from '@discordjs/core';
 import { UserCommand } from '../../data.js';
 
-export default {
+export const exampleUserCommand = {
     data: {
         name: 'user_example',
         type: ApplicationCommandType.User,

@@ -7,7 +7,7 @@ function pingMessage(p: string) {
     return `🏓 Pong! \`${p}\``;
 }
 
-export default {
+export const command = {
     data: {
         name: 'ping',
         description: 'Ping command',

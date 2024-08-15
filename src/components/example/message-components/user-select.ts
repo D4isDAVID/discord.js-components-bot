@@ -1,7 +1,7 @@
 import { ComponentType, MessageFlags } from '@discordjs/core';
 import { UserSelect } from '../../data.js';
 
-export default {
+export const exampleUserSelect = {
     data: {
         type: ComponentType.UserSelect,
         custom_id: 'user_select_example',

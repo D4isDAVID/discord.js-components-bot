@@ -3,7 +3,7 @@ import { Modal } from '../../data.js';
 import { mapModalTextInputValues } from '../../interactions.js';
 import { createStatefulInteraction } from '../../stateful.js';
 
-export default createStatefulInteraction<Modal>({
+export const exampleStatefulModal = createStatefulInteraction<Modal>({
     data: {
         custom_id: 'send_user_message',
         title: 'Send message to user',

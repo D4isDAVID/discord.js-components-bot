@@ -1,14 +1,17 @@
 import { ComponentType, MessageFlags } from '@discordjs/core';
 import { ChatInputCommand } from '../../data.js';
-import stringSelect, { options } from '../message-components/string-select.js';
+import {
+    exampleStringSelect,
+    options,
+} from '../message-components/string-select.js';
 
-export default {
+export const exampleChatInputCommand = {
     data: {
         name: 'example',
         description: 'Example command',
     },
     async execute({ api, data: interaction }) {
-        const stringSelectData = { ...stringSelect.data };
+        const stringSelectData = { ...exampleStringSelect.data };
 
         if (!interaction.guild_id)
             stringSelectData.options = stringSelectData.options.filter(

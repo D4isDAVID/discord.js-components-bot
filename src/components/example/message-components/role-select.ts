@@ -1,7 +1,7 @@
 import { ComponentType, MessageFlags } from '@discordjs/core';
 import { RoleSelect } from '../../data.js';
 
-export default {
+export const exampleRoleSelect = {
     data: {
         type: ComponentType.RoleSelect,
         custom_id: 'role_select_example',

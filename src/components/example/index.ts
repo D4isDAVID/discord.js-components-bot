@@ -1,33 +1,33 @@
 import { Component } from '../data.js';
-import chatInputCommand from './commands/chat-input-command.js';
-import messageCommand from './commands/message-command.js';
-import subcommands from './commands/subcommands.js';
-import userCommand from './commands/user-command.js';
-import button from './message-components/button.js';
-import channelSelect from './message-components/channel-select.js';
-import mentionableSelect from './message-components/mentionable-select.js';
-import roleSelect from './message-components/role-select.js';
-import stringSelect from './message-components/string-select.js';
-import userSelect from './message-components/user-select.js';
-import modal from './modal.js';
-import commandWithModal from './stateful/command-with-modal.js';
-import statefulModal from './stateful/stateful-modal.js';
+import { exampleChatInputCommand } from './commands/chat-input-command.js';
+import { exampleMessageCommand } from './commands/message-command.js';
+import { exampleSubcommandsCommand } from './commands/subcommands.js';
+import { exampleUserCommand } from './commands/user-command.js';
+import { exampleButton } from './message-components/button.js';
+import { exampleChannelSelect } from './message-components/channel-select.js';
+import { exampleMentionableSelect } from './message-components/mentionable-select.js';
+import { exampleRoleSelect } from './message-components/role-select.js';
+import { exampleStringSelect } from './message-components/string-select.js';
+import { exampleUserSelect } from './message-components/user-select.js';
+import { exampleModal } from './modal.js';
+import { exampleCommandWithStatefulModal } from './stateful/command-with-modal.js';
+import { exampleStatefulModal } from './stateful/stateful-modal.js';
 
 export default {
     commands: [
-        chatInputCommand,
-        subcommands,
-        userCommand,
-        messageCommand,
-        commandWithModal,
+        exampleChatInputCommand,
+        exampleSubcommandsCommand,
+        exampleUserCommand,
+        exampleMessageCommand,
+        exampleCommandWithStatefulModal,
     ],
     messageComponents: [
-        button,
-        stringSelect,
-        userSelect,
-        roleSelect,
-        mentionableSelect,
-        channelSelect,
+        exampleButton,
+        exampleStringSelect,
+        exampleUserSelect,
+        exampleRoleSelect,
+        exampleMentionableSelect,
+        exampleChannelSelect,
     ],
-    modals: [modal, statefulModal],
+    modals: [exampleModal, exampleStatefulModal],
 } satisfies Component;

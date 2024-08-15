@@ -1,8 +1,8 @@
 import { ApplicationCommandType } from '@discordjs/core';
 import { UserCommand } from '../../data.js';
-import modal from './stateful-modal.js';
+import { exampleStatefulModal } from './stateful-modal.js';
 
-export default {
+export const exampleCommandWithStatefulModal = {
     data: {
         type: ApplicationCommandType.User,
         name: 'Message',
@@ -11,7 +11,7 @@ export default {
         await api.interactions.createModal(
             interaction.id,
             interaction.token,
-            modal.stateful(interaction.data.target_id),
+            exampleStatefulModal.stateful(interaction.data.target_id),
         );
     },
 } satisfies UserCommand;

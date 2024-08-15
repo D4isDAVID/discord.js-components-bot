@@ -1,7 +1,7 @@
 import { GatewayDispatchEvents } from '@discordjs/core';
 import { GatewayEvent } from '../data.js';
 
-export default {
+export const ready = {
     name: GatewayDispatchEvents.Ready,
     type: 'once',
     async execute({ data }) {

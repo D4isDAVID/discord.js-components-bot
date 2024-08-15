@@ -10,7 +10,7 @@ function findStateful(id: string, list: string[]): string | void {
     for (const staticId of list) if (id.startsWith(staticId)) return staticId;
 }
 
-export default {
+export const interactionHandler = {
     name: GatewayDispatchEvents.InteractionCreate,
     type: 'on',
     async execute(props) {

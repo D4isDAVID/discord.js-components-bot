@@ -6,7 +6,7 @@ export function getPing() {
     return ping;
 }
 
-export default {
+export const heartbeat = {
     name: WebSocketShardEvents.HeartbeatComplete,
     type: 'on',
     async execute({ latency }) {

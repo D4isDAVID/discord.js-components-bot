@@ -2,7 +2,7 @@ import { ComponentType, MessageFlags, TextInputStyle } from '@discordjs/core';
 import { Modal } from '../data.js';
 import { mapModalTextInputValues } from '../interactions.js';
 
-export default {
+export const exampleModal = {
     data: {
         custom_id: 'example',
         title: 'Example modal',
