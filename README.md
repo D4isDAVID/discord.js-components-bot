@@ -1,4 +1,4 @@
-# Discord.js Components Bot (`djs-core`)
+# Discord.js Components Bot
 
 This is a [discord.js] bot template with a components system.
 It is written in [TypeScript], and uses [`@discordjs/core`][@discordjs/core].
