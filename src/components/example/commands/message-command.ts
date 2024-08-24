@@ -1,6 +1,6 @@
 import { ApplicationCommandType, MessageFlags } from '@discordjs/core';
 import { messageLink } from '@discordjs/formatters';
-import { MessageCommand } from '../../data.js';
+import { MessageCommand } from '/components/types.js';
 
 export const exampleMessageCommand = {
     data: {

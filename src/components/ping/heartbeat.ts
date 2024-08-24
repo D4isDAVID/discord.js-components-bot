@@ -1,5 +1,5 @@
 import { WebSocketShardEvents } from '@discordjs/ws';
-import { WebSocketEvent } from '../data.js';
+import { WebSocketEvent } from '../types.js';
 
 let ping = -1;
 export function getPing() {

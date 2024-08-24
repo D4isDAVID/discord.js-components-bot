@@ -3,7 +3,7 @@ import {
     Subcommand,
     createSubcommandGroup,
     createSubcommandsCommand,
-} from '../../subcommands.js';
+} from '/utils/subcommands.js';
 
 export const exampleSubcommandsCommand = createSubcommandsCommand(
     {

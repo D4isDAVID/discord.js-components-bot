@@ -1,5 +1,5 @@
 import { Awaitable } from '@discordjs/util';
-import { MessageComponent, Modal } from './data.js';
+import { MessageComponent, Modal } from '/components/types.js';
 
 type StatefulInteractionType = MessageComponent | Modal;
 

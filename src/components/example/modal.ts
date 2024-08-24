@@ -1,6 +1,6 @@
 import { ComponentType, MessageFlags, TextInputStyle } from '@discordjs/core';
-import { Modal } from '../data.js';
-import { mapModalTextInputValues } from '../interactions.js';
+import { Modal } from '../types.js';
+import { mapModalTextInputValues } from '/utils/interactions.js';
 
 export const exampleModal = {
     data: {

@@ -1,5 +1,5 @@
 import { ChannelType, ComponentType, MessageFlags } from '@discordjs/core';
-import { ChannelSelect } from '../../data.js';
+import { ChannelSelect } from '/components/types.js';
 
 export const exampleChannelSelect = {
     data: {

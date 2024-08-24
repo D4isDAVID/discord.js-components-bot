@@ -1,4 +1,4 @@
-import { Component } from '../data.js';
+import { Component } from '../types.js';
 import { command } from './command.js';
 import { heartbeat } from './heartbeat.js';
 

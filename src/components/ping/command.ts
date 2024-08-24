@@ -1,7 +1,7 @@
 import { WebSocketShardEvents } from '@discordjs/ws';
-import { gateway } from '../../env.js';
-import { ChatInputCommand } from '../data.js';
+import { ChatInputCommand } from '../types.js';
 import { getPing } from './heartbeat.js';
+import { gateway } from '/utils/env.js';
 
 function pingMessage(p: string) {
     return `🏓 Pong! \`${p}\``;

@@ -3,8 +3,8 @@ import {
     GatewayDispatchEvents,
     InteractionType,
 } from '@discordjs/core';
-import { GatewayEvent } from '../data.js';
 import { interactions, statefuls } from '../loader.js';
+import { GatewayEvent } from '../types.js';
 
 function findStateful(id: string, list: string[]): string | void {
     for (const staticId of list) if (id.startsWith(staticId)) return staticId;

@@ -1,5 +1,5 @@
 import { GatewayDispatchEvents } from '@discordjs/core';
-import { GatewayEvent } from '../data.js';
+import { GatewayEvent } from '../types.js';
 
 export const ready = {
     name: GatewayDispatchEvents.Ready,

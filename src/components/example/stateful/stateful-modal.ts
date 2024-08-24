@@ -1,7 +1,7 @@
 import { ComponentType, TextInputStyle } from '@discordjs/core';
-import { Modal } from '../../data.js';
-import { mapModalTextInputValues } from '../../interactions.js';
-import { createStatefulInteraction } from '../../stateful.js';
+import { Modal } from '/components/types.js';
+import { mapModalTextInputValues } from '/utils/interactions.js';
+import { createStatefulInteraction } from '/utils/stateful.js';
 
 export const exampleStatefulModal = createStatefulInteraction<Modal>({
     data: {

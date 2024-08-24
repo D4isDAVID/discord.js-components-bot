@@ -8,7 +8,7 @@ import {
     ApplicationCommandOptionType,
 } from '@discordjs/core';
 import { Awaitable } from '@discordjs/util';
-import { ChatInputCommand, InteractionExecuteArgs } from './data.js';
+import { ChatInputCommand, InteractionExecuteArgs } from '/components/types.js';
 
 type SubcommandOrGroupExecuteArgs<
     I extends APIInteraction,

@@ -6,7 +6,6 @@ import { stdout } from 'node:process';
 import { clearLine, moveCursor } from 'node:readline';
 import { URL } from 'node:url';
 import { inspect } from 'node:util';
-import { client, gateway, rest } from '../env.js';
 import {
     ApplicationCommand,
     Component,
@@ -14,8 +13,9 @@ import {
     EventsMap,
     MessageComponent,
     Modal,
-} from './data.js';
-import { isStatefulInteraction } from './stateful.js';
+} from './types.js';
+import { client, gateway, rest } from '/utils/env.js';
+import { isStatefulInteraction } from '/utils/stateful.js';
 
 const COMPONENTS_URL = new URL('./', import.meta.url);
 

@@ -1,6 +1,6 @@
 import { stdout } from 'node:process';
 import { commands, loadComponents } from './components/loader.js';
-import { api } from './env.js';
+import { api } from './utils/env.js';
 
 await loadComponents();
 

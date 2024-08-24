@@ -1,4 +1,4 @@
-import { Component } from '../data.js';
+import { Component } from '../types.js';
 import { exampleChatInputCommand } from './commands/chat-input-command.js';
 import { exampleMessageCommand } from './commands/message-command.js';
 import { exampleSubcommandsCommand } from './commands/subcommands.js';

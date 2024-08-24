@@ -1,5 +1,5 @@
 import { ComponentType, MessageFlags } from '@discordjs/core';
-import { RoleSelect } from '../../data.js';
+import { RoleSelect } from '/components/types.js';
 
 export const exampleRoleSelect = {
     data: {

@@ -1,6 +1,6 @@
 import { ButtonStyle, ComponentType } from '@discordjs/core';
-import { Button } from '../../data.js';
 import { exampleModal } from '../modal.js';
+import { Button } from '/components/types.js';
 
 export const exampleButton = {
     data: {

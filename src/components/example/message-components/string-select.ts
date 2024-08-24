@@ -3,12 +3,12 @@ import {
     ComponentType,
     MessageFlags,
 } from '@discordjs/core';
-import { StringSelect } from '../../data.js';
 import { exampleButton } from './button.js';
 import { exampleChannelSelect } from './channel-select.js';
 import { exampleMentionableSelect } from './mentionable-select.js';
 import { exampleRoleSelect } from './role-select.js';
 import { exampleUserSelect } from './user-select.js';
+import { StringSelect } from '/components/types.js';
 
 export const options: Record<
     string,

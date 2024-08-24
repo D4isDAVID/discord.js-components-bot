@@ -1,5 +1,5 @@
 import { ComponentType, MessageFlags } from '@discordjs/core';
-import { MentionableSelect } from '../../data.js';
+import { MentionableSelect } from '/components/types.js';
 
 export const exampleMentionableSelect = {
     data: {

@@ -1,5 +1,5 @@
 import { loadComponents } from './components/loader.js';
-import { gateway } from './env.js';
+import { gateway } from './utils/env.js';
 
 await loadComponents();
 

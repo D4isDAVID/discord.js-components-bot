@@ -1,6 +1,6 @@
 import { ApplicationCommandType } from '@discordjs/core';
-import { UserCommand } from '../../data.js';
 import { exampleStatefulModal } from './stateful-modal.js';
+import { UserCommand } from '/components/types.js';
 
 export const exampleCommandWithStatefulModal = {
     data: {
