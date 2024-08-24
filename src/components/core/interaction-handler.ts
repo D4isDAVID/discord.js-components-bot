@@ -6,8 +6,10 @@ import {
 import { interactions, statefuls } from '../loader.js';
 import { GatewayEvent } from '../types.js';
 
-function findStateful(id: string, list: string[]): string | void {
-    for (const staticId of list) if (id.startsWith(staticId)) return staticId;
+function findStateful(id: string, list: string[]): string | undefined {
+    return list
+        .filter((s) => id.startsWith(s))
+        .sort((a, b) => b.length - a.length)[0];
 }
 
 export const interactionHandler = {
