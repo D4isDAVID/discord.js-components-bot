@@ -6,7 +6,7 @@ import { stdout } from 'node:process';
 import { clearLine, moveCursor } from 'node:readline';
 import { URL } from 'node:url';
 import { inspect } from 'node:util';
-import { client, exitOnEventError, gateway, rest } from '../env.js';
+import { client, gateway, rest } from '../env.js';
 import {
     ApplicationCommand,
     Component,
@@ -37,7 +37,6 @@ function registerEvent(emitter: EventEmitter, event: EventsMap[EventName]) {
         try {
             await event.execute(...args);
         } catch (err) {
-            if (exitOnEventError) throw err;
             console.error(inspect(err));
         }
     });
