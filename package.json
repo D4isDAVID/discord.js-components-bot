@@ -1,7 +1,5 @@
 {
   "name": "discord.js-components-bot",
-  "description": "Discord.js bot template with components system",
-  "license": "MIT",
   "private": true,
   "main": "dist/index.js",
   "type": "module",
