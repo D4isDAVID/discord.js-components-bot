@@ -9,7 +9,6 @@
     "lint": "prettier --ignore-path .gitignore -c .",
     "format": "prettier --ignore-path .gitignore -w .",
     "build": "rimraf dist && tsc",
-    "build:watch": "tsc --watch",
     "deploy": "node --env-file=.env dist/deploy.js",
     "start": "node --env-file=.env ."
   },

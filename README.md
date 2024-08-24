@@ -49,7 +49,6 @@ handle simple state between interactions with ease
 - `npm run lint` - Lint your code with [Prettier]
 - `npm run format` - Format your code with [Prettier]
 - `npm run build` - Build your code with the [TypeScript] compiler
-- `npm run build:watch` - Build your code in watch mode
 - `npm run deploy` - Deploy commands to Discord
 - `npm run start` - Start your bot
 
