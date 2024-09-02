@@ -4,7 +4,7 @@ import { MessageCommand } from '/components/types.js';
 
 export const exampleMessageCommand = {
     data: {
-        name: 'message_example',
+        name: 'Message Example',
         type: ApplicationCommandType.Message,
     },
     async execute({ api, data: interaction }) {

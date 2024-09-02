@@ -3,7 +3,7 @@ import { UserCommand } from '/components/types.js';
 
 export const exampleUserCommand = {
     data: {
-        name: 'user_example',
+        name: 'User Example',
         type: ApplicationCommandType.User,
     },
     async execute({ api, data: interaction }) {
