@@ -22,7 +22,7 @@ import {
     MappedEvents,
     RESTPostAPIChatInputApplicationCommandsJSONBody,
     RESTPostAPIContextMenuApplicationCommandsJSONBody,
-    WithIntrinsicProps,
+    ToEventProps,
 } from '@discordjs/core';
 import { RestEvents } from '@discordjs/rest';
 import { Awaitable } from '@discordjs/util';
@@ -80,8 +80,7 @@ export type InteractionData<T extends APIInteraction> =
             ? APIModalInteractionResponseCallbackData
             : never;
 
-export type InteractionExecuteArgs<T extends APIInteraction> =
-    WithIntrinsicProps<T>;
+export type InteractionExecuteArgs<T extends APIInteraction> = ToEventProps<T>;
 
 export interface IInteraction<T extends APIInteraction> {
     readonly data: InteractionData<T>;

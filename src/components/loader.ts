@@ -35,6 +35,7 @@ export const statefuls = {
 function registerEvent(emitter: EventEmitter, event: EventsMap[EventName]) {
     emitter[event.type](event.name, async (...args) => {
         try {
+            //@ts-expect-error impossible to check but the types are correct
             await event.execute(...args);
         } catch (err) {
             console.error(inspect(err));
