@@ -53,6 +53,6 @@ handle simple state between interactions with ease
 - `npm run start` - Start your bot
 
 [discord.js]: https://discord.js.org
-[@discordjs/core]: https://discord.js.org/docs/packages/core
+[@discordjs/core]: https://discord.js.org/docs/packages/core/2.0.0
 [prettier]: https://prettier.io
 [typescript]: https://typescriptlang.org
